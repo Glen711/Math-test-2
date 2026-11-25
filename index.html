@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Limits & Derivatives — Personal 1st PUC Math Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- KaTeX for crisp, fast math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-alt: #f0f4fa;
+      --text: #1b2434;
+      --muted: #556277;
+      --border: #dfe6f0;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #e8f0fe;
+      --accent: #0ea5a4;
+      --accent-soft: #e6f7f6;
+      --warm: #d97706;
+      --warm-soft: #fef5e7;
+      --danger: #dc2626;
+      --danger-soft: #fdecec;
+      --success: #16a34a;
+      --success-soft: #eaf8ef;
+      --shadow: 0 6px 20px rgba(20, 35, 65, 0.06);
+      --radius: 14px;
+      --sidebar-w: 280px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1420;
+      --surface: #161f30;
+      --surface-alt: #1d283d;
+      --text: #eef3fb;
+      --muted: #9eb0cb;
+      --border: #2a3954;
+      --primary: #60a5fa;
+      --primary-dark: #3b82f6;
+      --primary-soft: rgba(96, 165, 250, 0.14);
+      --accent: #2dd4bf;
+      --accent-soft: rgba(45, 212, 191, 0.14);
+      --warm: #fbbf24;
+      --warm-soft: rgba(251, 191, 36, 0.14);
+      --danger: #f87171;
+      --danger-soft: rgba(248, 113, 113, 0.14);
+      --success: #4ade80;
+      --success-soft: rgba(74, 222, 128, 0.14);
+      --shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    /* Layout */
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      padding: 20px 16px 32px;
+      z-index: 40;
+      transition: transform 0.25s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    .brand h1 {
+      font-size: 0.98rem;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .brand small {
+      color: var(--muted);
+      font-size: 0.76rem;
+      display: block;
+    }
+
+    .progress-widget {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .progress-bar-bg {
+      height: 9px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--success));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+    .countdown-pill {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--warm);
+      background: var(--warm-soft);
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .nav-group-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
+      margin: 16px 8px 6px;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .nav-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .btn-ghost {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Mobile topbar */
+    .mobile-header {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 35;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .menu-btn {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 38;
+    }
+    .overlay.show { display: block; }
+
+    /* Main content */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 28px 34px 80px;
+      max-width: 1080px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 1.85rem;
+      line-height: 1.22;
+    }
+    .hero p {
+      margin: 0 0 16px;
+      color: rgba(255, 255, 255, 0.92);
+      max-width: 720px;
+      font-size: 0.98rem;
+    }
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .hero-stat {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      padding: 10px 14px;
+      border-radius: 11px;
+      font-size: 0.85rem;
+    }
+    .hero-stat strong { display: block; font-size: 1.05rem; }
+
+    /* Section Cards */
+    section.module {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      scroll-margin-top: 24px;
+    }
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .module-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    .module h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      line-height: 1.3;
+    }
+    .mastery-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+    .mastery-toggle input { width: 16px; height: 16px; accent-color: var(--success); cursor: pointer; }
+    .mastery-toggle.done {
+      background: var(--success-soft);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    h3 { font-size: 1.1rem; margin: 20px 0 8px; color: var(--text); }
+    p { margin: 0 0 12px; }
+    ul, ol { margin: 6px 0 14px; padding-left: 22px; }
+    li { margin-bottom: 6px; }
+
+    /* Callout boxes */
+    .tutor-tip, .exam-def, .mental-pic, .warning-box, .example-box {
+      border-radius: 12px;
+      padding: 15px 18px;
+      margin: 14px 0;
+      border-left: 4px solid;
+    }
+    .tutor-tip {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+    .exam-def {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+    }
+    .mental-pic {
+      background: var(--surface-alt);
+      border-color: #6366f1;
+    }
+    .warning-box {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+    }
+    .example-box {
+      background: var(--warm-soft);
+      border-color: var(--warm);
+    }
+    .box-label {
+      font-weight: 800;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* Interactive Playground Panels */
+    .playground {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+    .playground-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .pill-btn {
+      padding: 7px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .pill-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .canvas-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    canvas.math-canvas {
+      width: 100%;
+      height: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: block;
+    }
+    .readout-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.9rem;
+    }
+    .slider-group {
+      margin: 10px 0;
+    }
+    .slider-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .metric {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+    }
+    .metric strong {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    /* Funnel Stepper */
+    .funnel-steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .funnel-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 15px;
+      opacity: 0.35;
+      transition: all 0.25s;
+    }
+    .funnel-step.revealed {
+      opacity: 1;
+      border-color: var(--primary);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.08);
+    }
+    .step-badge {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 14px 0;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 11px 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th {
+      background: var(--surface-alt);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    /* Flashcards */
+    .flashcard-stage {
+      perspective: 1000px;
+      max-width: 620px;
+      margin: 14px auto;
+    }
+    .flashcard {
+      background: var(--surface);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      padding: 28px 24px;
+      min-height: 195px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s;
+    }
+    .flashcard:hover { transform: translateY(-2px); }
+    .fc-side-tag {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .fc-body { font-size: 1.15rem; font-weight: 600; }
+    .fc-sub { font-size: 0.86rem; color: var(--muted); margin-top: 10px; }
+    .fc-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Traps Grid */
+    .traps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .trap-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+    }
+    .trap-wrong {
+      background: var(--danger-soft);
+      color: var(--danger);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      margin: 8px 0;
+      font-weight: 600;
+    }
+    .trap-right {
+      background: var(--success-soft);
+      color: var(--success);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    /* Quiz & Practice */
+    .quiz-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .quiz-q {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 8px;
+    }
+    .opt-btn {
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .opt-btn:hover { border-color: var(--primary); }
+    .opt-btn.correct { background: var(--success-soft); border-color: var(--success); color: var(--success); font-weight: 700; }
+    .opt-btn.wrong { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+    .quiz-feedback {
+      margin-top: 10px;
+      font-size: 0.88rem;
+      padding: 10px 12px;
+      border-radius: 9px;
+      display: none;
+    }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.ok { background: var(--success-soft); border-left: 3px solid var(--success); }
+    .quiz-feedback.no { background: var(--danger-soft); border-left: 3px solid var(--danger); }
+
+    .blank-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .blank-input {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.92rem;
+      min-width: 180px;
+    }
+
+    /* Progressive Reveal Accordion */
+    .prob-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      background: var(--surface-alt);
+    }
+    .prob-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .marks-badge {
+      background: var(--warm-soft);
+      color: var(--warm);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .reveal-box {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-top: 10px;
+      font-size: 0.92rem;
+    }
+    .reveal-box.show { display: block; }
+
+    /* Videos Grid */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .video-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .video-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .video-link {
+      display: inline-block;
+      text-align: center;
+      background: #dc2626;
+      color: #fff;
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+    .video-link:hover { background: #b91c1c; }
+
+    /* Study Plan Checklist */
+    .plan-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px 15px;
+      margin-bottom: 10px;
+    }
+    .plan-item input[type="checkbox"] {
+      width: 19px;
+      height: 19px;
+      margin-top: 3px;
+      accent-color: var(--success);
+      cursor: pointer;
+    }
+    .plan-item.checked {
+      background: var(--success-soft);
+      border-color: var(--success);
+    }
+    .plan-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Night Before Revision Box */
+    .revision-box {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(14, 165, 164, 0.08));
+      border: 2px dashed var(--primary);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+
+    /* Timer bar */
+    .timer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .timer-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .mobile-header { display: flex; }
+      .main { margin-left: 0; padding: 18px 16px 64px; }
+      .canvas-grid { grid-template-columns: 1fr; }
+      section.module { padding: 20px 16px; }
+      .hero h2 { font-size: 1.45rem; }
+    }
+
+    @media print {
+      .sidebar, .mobile-header, .playground, .btn-row, .sidebar-actions { display: none !important; }
+      .main { margin-left: 0; max-width: 100%; }
+      .reveal-box { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mobile-header">
+  <button class="menu-btn" id="openMenuBtn">☰ Study Menu</button>
+  <strong>Limits &amp; Derivatives Tutor</strong>
+  <button class="menu-btn" id="mobileThemeBtn">🌙</button>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">∫′</div>
+      <div>
+        <h1>Limits &amp; Derivatives</h1>
+        <small>1st PUC / NCERT Ch. 13 Tutor</small>
+      </div>
+    </div>
+
+    <div class="progress-widget">
+      <div class="progress-row">
+        <span>Exam Readiness</span>
+        <span id="readinessPct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="readinessBar"></div>
+      </div>
+      <div class="countdown-pill" id="countdownPill">Loading Dec 10 countdown...</div>
+    </div>
+
+    <div class="nav-group-title">Core Lessons</div>
+    <a class="nav-link" href="#sec-big-picture"><span class="nav-num">1</span> The Big Picture</a>
+    <a class="nav-link" href="#sec-lhl-rhl"><span class="nav-num">2</span> Limits, LHL &amp; RHL</a>
+    <a class="nav-link" href="#sec-algebra-limits"><span class="nav-num">3</span> $\frac{0}{0}$ Funnel &amp; Theorem 2</a>
+    <a class="nav-link" href="#sec-sandwich-trig"><span class="nav-num">4</span> Sandwich &amp; Trig Limits</a>
+    <a class="nav-link" href="#sec-first-principle"><span class="nav-num">5</span> Derivatives &amp; First Principle</a>
+    <a class="nav-link" href="#sec-diff-rules"><span class="nav-num">6</span> Power, Product &amp; Quotient</a>
+
+    <div class="nav-group-title">Exam Toolkit</div>
+    <a class="nav-link" href="#sec-cheatsheet"><span class="nav-num">7</span> Formula Sheet &amp; Flashcards</a>
+    <a class="nav-link" href="#sec-traps"><span class="nav-num">8</span> 5 Fatal 1st PUC Traps</a>
+    <a class="nav-link" href="#sec-practice"><span class="nav-num">9</span> KSEAB Practice &amp; Mock Quiz</a>
+    <a class="nav-link" href="#sec-videos"><span class="nav-num">10</span> Curated Study Videos</a>
+    <a class="nav-link" href="#sec-plan"><span class="nav-num">11</span> 15-Day Plan &amp; Night-Before</a>
+
+    <div class="sidebar-actions">
+      <button class="btn-ghost" id="themeToggleBtn">🌙 Dark Mode</button>
+      <button class="btn-ghost" id="resetProgressBtn">↺ Reset</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- HERO -->
+    <div class="hero">
+      <span class="hero-badge">🎯 Target: Pass Comfortably &amp; Score 2nd Class+ on Dec 10</span>
+      <h2>Welcome! I’m Your Personal Limits &amp; Derivatives Tutor.</h2>
+      <p>
+        First, take a deep breath. You do <strong>not</strong> need to be a "math genius" to score well in Chapter 13.
+        1st PUC Calculus is one of the most predictable chapters in the syllabus—the exam tests the exact same
+        <strong>5 problem recipes</strong> and <strong>2 guaranteed 5-mark proofs</strong> every single year.
+        Use the sliders, practice cards, and daily checklist below—your progress saves automatically in your browser!
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>45 mins / day</strong>Calm, stress-free study pace</div>
+        <div class="hero-stat"><strong>4 Interactive Labs</strong>Drag sliders to see math move</div>
+        <div class="hero-stat"><strong>20+ Exam Problems</strong>Hints + step-by-step model answers</div>
+        <div class="hero-stat"><strong>2 Guaranteed Proofs</strong>Easy 5-mark score boosters</div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: BIG PICTURE -->
+    <section class="module" id="sec-big-picture">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 1 • 3-Minute Intuition</span>
+          <h2>1. The Big Picture: What Are Limits &amp; Derivatives Actually Doing?</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m1"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Before we touch a single scary symbol, picture two everyday situations from your NCERT textbook:
+      </p>
+      <ul>
+        <li>
+          <strong>The Falling Stone (Instantaneous Speed):</strong> Imagine dropping a stone off a tall cliff.
+          Its distance changes every split second according to $s = 4.9t^2$. You don't want its average speed over an hour—you
+          want the <em>exact speedometer reading</em> at $t = 2\text{ s}$.
+        </li>
+        <li>
+          <strong>The Car &amp; The Pothole (Limits):</strong> Picture a car driving toward a speed bump at the $2\text{ m}$ mark.
+          Even if a huge pothole sits right at $2\text{ m}$ so the car can't stop on it, watching where the road leads from
+          just <em>before</em> $2\text{ m}$ ($1.99\text{ m}$) and just <em>after</em> $2\text{ m}$ ($2.01\text{ m}$) tells you
+          its exact expected position.
+        </li>
+      </ul>
+
+      <div class="exam-def">
+        <span class="box-label">📘 Exam-Ready Big Picture</span>
+        <strong>Calculus</strong> is the branch of mathematics that studies how the value of a function changes as points in its domain change.
+        <ul>
+          <li><strong>Limits</strong> tell us what value a function <em>approaches</em> near a point—even when direct substitution gives $\frac{0}{0}$.</li>
+          <li><strong>Derivatives</strong> use limits to measure the exact instantaneous rate of change—visually, the <strong>slope of the tangent</strong> to a curve at a single point.</li>
+        </ul>
+      </div>
+
+      <div class="tutor-tip">
+        <span class="box-label">🧑‍🏫 Tutor's Secret for Passing Easily</span>
+        Don't just read math with your eyes—that tricks your brain into feeling confident while forgetting the steps in the exam hall!
+        Keep a rough notebook beside you. Every time you click "Reveal Solution" on this page, write the formula line down once with a pen.
+        In 1st PUC exams, <strong>writing the correct formula alone earns step marks</strong> even if you make an arithmetic slip later.
+      </div>
+    </section>
+
+    <!-- SECTION 2: LHL & RHL -->
+    <section class="module" id="sec-lhl-rhl">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 2 • Concept 2.1</span>
+          <h2>2. Intuitive Idea of Limits, LHL &amp; RHL</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m2"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Why can't we always just plug $x = a$ directly into $f(x)$? Because at $x = a$, the function might blow up into
+        $\frac{0}{0}$ (like $\frac{x^2 - 4}{x - 2}$ at $x = 2$) or have a sudden cliff-like jump.
+        Checking values just to the <strong>left</strong> and just to the <strong>right</strong> reveals where the graph is truly heading.
+      </p>
+
+      <div class="exam-def">
+        <span class="box-label">📘 Exam-Ready Definitions</span>
+        <ul>
+          <li><strong>Left Hand Limit (LHL):</strong> The expected value of $f$ at $x = a$ given values of $f$ near $x$ to the left of $a$, written $\lim_{x \to a^-} f(x)$.</li>
+          <li><strong>Right Hand Limit (RHL):</strong> The expected value of $f$ at $x = a$ given values of $f$ near $x$ to the right of $a$, written $\lim_{x \to a^+} f(x)$.</li>
+          <li><strong>Existence of Limit:</strong> If $\text{LHL} = \text{RHL}$, that common value is the limit $\lim_{x \to a} f(x)$. If $\text{LHL} \ne \text{RHL}$, the limit <strong>does not exist</strong>.</li>
+          <li><strong>Crucial Exam Note:</strong> $\lim_{x \to a} f(x)$ and $f(a)$ may <em>not</em> be the same!</li>
+        </ul>
+      </div>
+
+      <!-- INTERACTIVE PLAYGROUND 1 -->
+      <div class="playground">
+        <div class="playground-title">
+          <span>🧪 Interactive Lab 1: Walk Toward the Bridge (LHL vs RHL Explorer)</span>
+          <span style="font-size:0.8rem;color:var(--muted);">Switch functions &amp; drag the slider!</span>
+        </div>
+        <div class="controls-row">
+          <button class="pill-btn active" data-lim-mode="hole">Case A: Hole $\frac{x^2-4}{x-2}$ at $a=2$</button>
+          <button class="pill-btn" data-lim-mode="jump">Case B: Jump (NCERT Fig 13.6) at $a=0$</button>
+          <button class="pill-btn" data-lim-mode="smooth">Case C: Smooth $x+1$ at $a=2$</button>
+        </div>
+        <div class="canvas-grid">
+          <canvas id="limitCanvas" class="math-canvas" width="520" height="310"></canvas>
+          <div class="readout-card">
+            <div id="limDesc" style="font-size:0.88rem;margin-bottom:8px;"></div>
+            <div class="slider-group">
+              <label>
+                <span>Move $x$ near target $a$:</span>
+                <span id="limXVal" style="font-family:'JetBrains Mono',monospace;color:var(--primary);"></span>
+              </label>
+              <input type="range" id="limSlider" min="-1.5" max="1.5" step="0.02" value="-0.6">
+              <div style="display:flex;justify-content:space-between;font-size:0.74rem;color:var(--muted);">
+                <span>← From Left ($a^-$)</span>
+                <span>Target $a$</span>
+                <span>From Right ($a^+$) →</span>
+              </div>
+            </div>
+            <div class="metric-grid">
+              <div class="metric">Current $f(x)$<strong id="limFxVal">—</strong></div>
+              <div class="metric">Value at $f(a)$<strong id="limFaVal">—</strong></div>
+              <div class="metric">LHL ($\to a^-$)<strong id="limLhlVal">—</strong></div>
+              <div class="metric">RHL ($\to a^+$)<strong id="limRhlVal">—</strong></div>
+            </div>
+            <div id="limVerdict" style="margin-top:10px;padding:9px 11px;border-radius:8px;font-weight:700;font-size:0.85rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mental-pic">
+        <span class="box-label">🧠 Mental Picture (NCERT Fig. 13.6)</span>
+        Draw a coordinate plane with a straight line ending at an <strong>open circle $(0, -2)$</strong> on the left,
+        a <strong>solid dot at the origin $O(0, 0)$</strong>, and another line starting from an <strong>open circle $(0, 2)$</strong> on the right.
+        Even though $f(0) = 0$ exists, $\text{LHL} = -2 \ne \text{RHL} = 2$, so the limit does NOT exist!
+      </div>
+
+      <div class="example-box">
+        <span class="box-label">📝 Problem-Solving Template (Piecewise / Modulus Functions)</span>
+        <ol>
+          <li><strong>Step 1 (LHL):</strong> Pick the branch defined for $x < a$ and plug in $x = a$.</li>
+          <li><strong>Step 2 (RHL):</strong> Pick the branch defined for $x > a$ and plug in $x = a$.</li>
+          <li><strong>Step 3 (Compare):</strong> If $\text{LHL} = \text{RHL}$, write "Limit exists and equals ___." If not, write "$\text{LHL} \ne \text{RHL}$, so the limit does not exist."</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SECTION 3: ALGEBRA OF LIMITS & 0/0 FUNNEL -->
+    <section class="module" id="sec-algebra-limits">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 3 • Concept 2.2</span>
+          <h2>3. Algebra of Limits, The $\frac{0}{0}$ Funnel &amp; Theorem 2</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m3"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Good news! For any normal <strong>polynomial</strong> like $x^3 - x^2 + 1$, limits are super easy: just plug in $x = a$ directly!
+        $$\lim_{x \to a} f(x) = f(a)$$
+        Limits also split cleanly across addition, subtraction, multiplication, and division (as long as the denominator doesn't become $0$).
+      </p>
+
+      <div class="tutor-tip">
+        <span class="box-label">🚨 What If Direct Substitution Gives $\frac{0}{0}$?</span>
+        Hear an alarm bell! <strong>Never write $\frac{0}{0} = 0$ or $1$.</strong>
+        Getting $\frac{0}{0}$ simply means the hidden "troublemaker factor" $(x - a)$ is sitting in both the numerator and denominator.
+        Factor it out, cancel it, and plug $x = a$ in again!
+      </div>
+
+      <!-- INTERACTIVE PLAYGROUND 2: CANCELLATION FUNNEL -->
+      <div class="playground">
+        <div class="playground-title">
+          <span>🧪 Interactive Lab 2: The $\frac{0}{0}$ Cancellation Funnel</span>
+          <span style="font-size:0.8rem;color:var(--muted);">Click "Next Step" to watch how every $\frac{0}{0}$ problem collapses!</span>
+        </div>
+        <div class="controls-row">
+          <button class="pill-btn active" data-funnel="0">Ex 1: $\lim_{x \to 2}\frac{x^2-4}{x-2}$</button>
+          <button class="pill-btn" data-funnel="1">Ex 2: $\lim_{x \to 2}\frac{x^3-2x^2}{x^2-5x+6}$</button>
+          <button class="pill-btn" data-funnel="2">Ex 3: $\lim_{x \to 2}\frac{x^3-8}{x-2}$ (Power Form)</button>
+        </div>
+        <div class="controls-row">
+          <button class="pill-btn active" id="funnelNextBtn">▶ Reveal Next Step</button>
+          <button class="pill-btn" id="funnelResetBtn">↺ Restart Funnel</button>
+        </div>
+        <div class="funnel-steps" id="funnelContainer"></div>
+      </div>
+
+      <h3>Power Limit Shortcut (Theorem 2) — High-Yield Formula + 5-Mark Proof</h3>
+      <div class="exam-def">
+        <span class="box-label">📘 Theorem 2 Formula</span>
+        $$\lim_{x \to a} \frac{x^n - a^n}{x - a} = n a^{n-1}$$
+        Valid for any positive integer $n$ (and also rational $n$ when $a > 0$).
+      </div>
+
+      <div class="example-box">
+        <span class="box-label">⚡ Quick Practice Example</span>
+        Evaluate $\lim_{x \to 2} \frac{x^5 - 32}{x - 2}$:
+        <br>Rewrite $32 = 2^5$, so we have $\lim_{x \to 2} \frac{x^5 - 2^5}{x - 2}$.
+        Here $n = 5$ and $a = 2$. Plug into $n a^{n-1}$:
+        $$5 \times 2^{5-1} = 5 \times 2^4 = 5 \times 16 = \mathbf{80}$$
+      </div>
+    </section>
+
+    <!-- SECTION 4: SANDWICH THEOREM & TRIG LIMITS -->
+    <section class="module" id="sec-sandwich-trig">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 4 • Concept 2.3 • Guaranteed 5-Mark Proof</span>
+          <h2>4. Sandwich Theorem &amp; Trigonometric Limits</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m4"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Why can't we use our factoring trick on $\lim_{x \to 0} \frac{\sin x}{x}$? Because plugging in $x = 0$ gives $\frac{0}{0}$,
+        and you <strong>cannot factor $\sin x$</strong> like a polynomial!
+        Instead, we trap $\frac{\sin x}{x}$ between two "slices of bread" that both squeeze down to $1$.
+      </p>
+
+      <div class="exam-def">
+        <span class="box-label">📘 Theorem 4 (Sandwich Theorem) &amp; Theorem 5 (Standard Trig Limits)</span>
+        <p><strong>Sandwich Theorem:</strong> If $f(x) \le g(x) \le h(x)$ and $\lim_{x \to a} f(x) = l = \lim_{x \to a} h(x)$, then $\lim_{x \to a} g(x) = l$.</p>
+        <p style="margin-bottom:0;">
+          <strong>Two Golden Trig Limits ($x$ MUST be in radians):</strong>
+          $$\lim_{x \to 0} \frac{\sin x}{x} = 1 \qquad \text{and} \qquad \lim_{x \to 0} \frac{1 - \cos x}{x} = 0$$
+        </p>
+      </div>
+
+      <!-- INTERACTIVE PLAYGROUND 3: UNIT CIRCLE SANDWICH PROOF -->
+      <div class="playground">
+        <div class="playground-title">
+          <span>🧪 Interactive Lab 3: Unit Circle Proof Explorer ($\cos x < \frac{\sin x}{x} < 1$)</span>
+          <span style="font-size:0.8rem;color:var(--muted);">Drag angle $x$ toward $0$ and watch the sandwich squeeze!</span>
+        </div>
+        <div class="canvas-grid">
+          <canvas id="unitCircleCanvas" class="math-canvas" width="520" height="330"></canvas>
+          <div class="readout-card">
+            <div class="slider-group">
+              <label>
+                <span>Angle $x$ (radians):</span>
+                <span id="angleVal" style="font-family:'JetBrains Mono',monospace;color:var(--primary);">0.75 rad</span>
+              </label>
+              <input type="range" id="angleSlider" min="0.05" max="1.25" step="0.01" value="0.75">
+            </div>
+            <p style="font-size:0.83rem;margin-bottom:8px;">
+              <strong>3 Nested Areas (Unit Circle, Radius $OA = 1$):</strong>
+            </p>
+            <div class="metric-grid">
+              <div class="metric">Small $\triangle OAC$ ($\frac{1}{2}\sin x$)<strong id="areaSmall">—</strong></div>
+              <div class="metric">Sector $OAC$ ($\frac{1}{2}x$)<strong id="areaSector">—</strong></div>
+              <div class="metric">Big $\triangle OAB$ ($\frac{1}{2}\tan x$)<strong id="areaBig">—</strong></div>
+              <div class="metric">Middle $\frac{\sin x}{x}$<strong id="ratioSinX">—</strong></div>
+            </div>
+            <div id="sandwichReadout" style="margin-top:10px;padding:10px;border-radius:9px;background:var(--primary-soft);font-family:'JetBrains Mono',monospace;font-size:0.83rem;font-weight:700;text-align:center;"></div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;margin-bottom:0;">
+              Notice: As you slide $x \to 0.05$, $\cos x$ climbs right up to $1$, trapping $\frac{\sin x}{x}$ at $1$!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h3>The 3 Must-Know Trig Limit Tricks (Easy 1–2 Marks!)</h3>
+      <ul>
+        <li>
+          <strong>1. "Match the Box" Trick ($\frac{\sin(kx)}{x}$):</strong>
+          Whatever sits inside $\sin(\text{box})$ must sit right underneath it!
+          Example: $\lim_{x \to 0} \frac{\sin 4x}{\sin 2x} = \lim_{x \to 0} \frac{\sin 4x}{4x} \cdot \frac{2x}{\sin 2x} \cdot \frac{4x}{2x} = 1 \cdot 1 \cdot 2 = \mathbf{2}$.
+        </li>
+        <li>
+          <strong>2. $\tan x$ Limit:</strong> Always rewrite $\tan x = \frac{\sin x}{\cos x}$:
+          $$\lim_{x \to 0} \frac{\tan x}{x} = \lim_{x \to 0} \frac{\sin x}{x} \cdot \lim_{x \to 0} \frac{1}{\cos x} = 1 \cdot \frac{1}{1} = \mathbf{1}$$
+        </li>
+        <li>
+          <strong>3. $1 - \cos x$ Limit:</strong> Remember the half-angle identity $1 - \cos x = 2\sin^2\!\left(\frac{x}{2}\right)$!
+        </li>
+      </ul>
+    </section>
+
+    <!-- SECTION 5: DERIVATIVES & FIRST PRINCIPLE -->
+    <section class="module" id="sec-first-principle">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 5 • Concept 2.4</span>
+          <h2>5. Derivatives: Geometrical Meaning &amp; First Principle</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m5"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Why does the First Principle formula have $\lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$?
+        Take two points on a curve: $P(a, f(a))$ and $Q(a+h, f(a+h))$. The fraction $\frac{f(a+h) - f(a)}{h}$ is just
+        "Rise over Run"—the slope of the <strong>secant chord $PQ$</strong>.
+        As $h \to 0$, point $Q$ slides straight onto point $P$, turning the chord into the <strong>tangent line at $P$</strong>!
+        Geometrically, $f'(a) = \tan\psi$, where $\psi$ is the angle the tangent makes with the positive $x$-axis.
+      </p>
+
+      <div class="exam-def">
+        <span class="box-label">📘 Exam-Ready Definition (First Principle of Derivative)</span>
+        $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+        Whenever an exam question says <strong>"find the derivative from first principle"</strong>, you MUST start with this exact formula!
+      </div>
+
+      <!-- INTERACTIVE PLAYGROUND 4: SECANT TO TANGENT -->
+      <div class="playground">
+        <div class="playground-title">
+          <span>🧪 Interactive Lab 4: Secant-to-Tangent Derivative Machine ($f(x) = x^2$)</span>
+          <span style="font-size:0.8rem;color:var(--muted);">Shrink the gap $h \to 0$ and watch the slope lock onto $2x$!</span>
+        </div>
+        <div class="canvas-grid">
+          <canvas id="derivCanvas" class="math-canvas" width="520" height="320"></canvas>
+          <div class="readout-card">
+            <div class="slider-group">
+              <label>
+                <span>Point $P$ at $x =$:</span>
+                <span id="derivXVal" style="font-family:'JetBrains Mono',monospace;color:var(--primary);">1.0</span>
+              </label>
+              <input type="range" id="derivXSlider" min="0.5" max="2.0" step="0.5" value="1.0">
+            </div>
+            <div class="slider-group">
+              <label>
+                <span>Gap width $h =$:</span>
+                <span id="derivHVal" style="font-family:'JetBrains Mono',monospace;color:var(--warm);">1.50</span>
+              </label>
+              <input type="range" id="derivHSlider" min="0.02" max="1.8" step="0.02" value="1.50">
+            </div>
+            <div class="metric-grid">
+              <div class="metric">Secant Slope $\frac{f(x+h)-f(x)}{h}$<strong id="secSlope">—</strong></div>
+              <div class="metric">Exact Tangent $f'(x) = 2x$<strong id="tanSlope">—</strong></div>
+            </div>
+            <div style="margin-top:10px;font-size:0.83rem;background:var(--surface-alt);padding:9px 11px;border-radius:8px;">
+              <strong>Right Triangle $PQR$ (NCERT Fig. 13.11):</strong><br>
+              Horizontal base $PR = h$<br>
+              Vertical height $QR = f(x+h) - f(x)$<br>
+              As $h \to 0$, <span style="color:#ea580c;font-weight:700;">Orange Secant</span> becomes <span style="color:#16a34a;font-weight:700;">Green Tangent</span>!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <span class="box-label">🎯 4-Step Mission for Every First Principle Question ("Cancel the Bottom $h$!")</span>
+        <strong>Worked Example: Find the derivative of $f(x) = x^2$ from first principle.</strong>
+        <ol>
+          <li><strong>Step 1 (Write Formula — earns 1 mark!):</strong> $f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$</li>
+          <li><strong>Step 2 (Substitute &amp; Expand):</strong> $\lim_{h \to 0} \frac{(x+h)^2 - x^2}{h} = \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h} = \lim_{h \to 0} \frac{2xh + h^2}{h}$</li>
+          <li><strong>Step 3 (Factor $h$ &amp; Cancel):</strong> $\lim_{h \to 0} \frac{h(2x + h)}{h} = \lim_{h \to 0} (2x + h)$</li>
+          <li><strong>Step 4 (Plug in $h = 0$):</strong> $2x + 0 = \mathbf{2x}$!</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SECTION 6: ALGEBRA OF DERIVATIVES -->
+    <section class="module" id="sec-diff-rules">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 6 • Concept 2.5 • Your Scoring Machine</span>
+          <h2>6. Fast Differentiation Rules: Power, Product, Quotient &amp; Trig</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m6"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Whenever a question simply says <em>"Find the derivative of..."</em> (without saying "from first principle"),
+        use these fast shortcuts!
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rule Name</th>
+              <th>Formula</th>
+              <th>Easy Memory Rhyme</th>
+              <th>Worked Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Constant Rule</strong></td>
+              <td>$\frac{d}{dx}(c) = 0$</td>
+              <td>"Standalone numbers vanish to 0."</td>
+              <td>$\frac{d}{dx}(99) = 0$</td>
+            </tr>
+            <tr>
+              <td><strong>Power Rule</strong></td>
+              <td>$\frac{d}{dx}(x^n) = n x^{n-1}$</td>
+              <td>"Drop power to front, subtract 1 from top."</td>
+              <td>$\frac{d}{dx}(4x^3 + 7) = 12x^2 + 0 = 12x^2$</td>
+            </tr>
+            <tr>
+              <td><strong>Sum / Difference</strong></td>
+              <td>$(u \pm v)' = u' \pm v'$</td>
+              <td>"Differentiate term-by-term."</td>
+              <td>$\frac{d}{dx}(x^2 - \sin x) = 2x - \cos x$</td>
+            </tr>
+            <tr>
+              <td><strong>Product Rule (Leibnitz)</strong></td>
+              <td>$(u \cdot v)' = u'v + uv'$</td>
+              <td>"Deriv of 1st × 2nd <strong>PLUS</strong> 1st × deriv of 2nd."</td>
+              <td>$\frac{d}{dx}(x^2 \sin x) = (2x)\sin x + x^2(\cos x)$</td>
+            </tr>
+            <tr>
+              <td><strong>Quotient Rule</strong></td>
+              <td>$\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$</td>
+              <td>"Low $d(\text{high})$ <strong>MINUS</strong> high $d(\text{low})$, all over low squared."</td>
+              <td>$\frac{d}{dx}\left(\frac{x+1}{x}\right) = \frac{1\cdot x - (x+1)\cdot 1}{x^2} = -\frac{1}{x^2}$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tutor-tip">
+        <span class="box-label">💡 The "CO-" Minus Sign Trick for Trig Derivatives</span>
+        <ul>
+          <li>$\frac{d}{dx}(\sin x) = \cos x$ &nbsp;&nbsp;|&nbsp;&nbsp; $\frac{d}{dx}(\mathbf{co}\text{s } x) = \mathbf{-}\sin x$</li>
+          <li>$\frac{d}{dx}(\tan x) = \sec^2 x$ &nbsp;&nbsp;|&nbsp;&nbsp; $\frac{d}{dx}(\mathbf{co}\text{t } x) = \mathbf{-}\csc^2 x$</li>
+          <li>$\frac{d}{dx}(\sec x) = \sec x \tan x$ &nbsp;&nbsp;|&nbsp;&nbsp; $\frac{d}{dx}(\mathbf{co}\text{sec } x) = \mathbf{-}\csc x \cot x$</li>
+        </ul>
+        Notice the pattern? Every trig function starting with <strong>"co-"</strong> gives a <strong>negative sign ($-$)</strong> in its derivative!
+      </div>
+
+      <!-- INTERACTIVE RULE SELECTOR -->
+      <div class="playground">
+        <div class="playground-title">
+          <span>🧭 Quick Rule Picker: "Which Rule Should I Use on This Exam Question?"</span>
+        </div>
+        <div class="controls-row">
+          <button class="pill-btn active" data-rulepick="poly">Polynomial: $3x^4 - 5x^2 + 9$</button>
+          <button class="pill-btn" data-rulepick="prod">Product: $x^4(5\sin x - 3\cos x)$</button>
+          <button class="pill-btn" data-rulepick="quot">Fraction: $\frac{x^5 - \cos x}{\sin x}$</button>
+          <button class="pill-btn" data-rulepick="trig">Derive $\tan x = \frac{\sin x}{\cos x}$</button>
+        </div>
+        <div id="rulePickOutput" class="readout-card"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: CHEAT SHEET & FLASHCARDS -->
+    <section class="module" id="sec-cheatsheet">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 7 • Active Recall</span>
+          <h2>7. Complete Formula Cheat Sheet &amp; Interactive Flashcards</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m7"> Mark Mastered</label>
+      </div>
+
+      <div class="playground">
+        <div class="playground-title">
+          <span>🃏 Interactive Formula Flashcards (Click Card to Flip!)</span>
+          <span id="fcCounter" style="font-size:0.84rem;font-weight:700;color:var(--primary);">Card 1 / 10</span>
+        </div>
+        <div class="flashcard-stage">
+          <div class="flashcard" id="flashcardBox">
+            <div class="fc-side-tag" id="fcSideTag">QUESTION — CLICK TO REVEAL FORMULA</div>
+            <div class="fc-body" id="fcBody"></div>
+            <div class="fc-sub" id="fcSub"></div>
+          </div>
+          <div class="fc-controls">
+            <button class="pill-btn" id="fcPrevBtn">← Previous</button>
+            <button class="pill-btn active" id="fcFlipBtn">🔄 Flip Card</button>
+            <button class="pill-btn" id="fcNextBtn">Next →</button>
+            <button class="pill-btn" id="fcShuffleBtn">🔀 Shuffle</button>
+          </div>
+        </div>
+      </div>
+
+      <h3>Complete Exam Formula Reference Table</h3>
+      <p style="font-size:0.86rem;color:var(--muted);">Note: All angles $x$ in trigonometric limits and derivatives are measured in <strong>radians</strong>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Concept / Law</th>
+              <th>Formula or Statement</th>
+              <th>When to Use It</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Existence of Limit</td>
+              <td>$\lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = l$</td>
+              <td>Piecewise, modulus, or step functions at boundary $x = a$.</td>
+            </tr>
+            <tr>
+              <td>Power Limit (Theorem 2)</td>
+              <td>$\lim_{x \to a} \frac{x^n - a^n}{x - a} = n a^{n-1}$</td>
+              <td>$\frac{0}{0}$ rational limits involving $n^{\text{th}}$ powers.</td>
+            </tr>
+            <tr>
+              <td>Trig Limit 1 (Theorem 5)</td>
+              <td>$\lim_{x \to 0} \frac{\sin x}{x} = 1$</td>
+              <td>$\frac{0}{0}$ limits with $\sin(\text{small angle})$.</td>
+            </tr>
+            <tr>
+              <td>Trig Limit 2 (Theorem 5)</td>
+              <td>$\lim_{x \to 0} \frac{1 - \cos x}{x} = 0$</td>
+              <td>$\frac{0}{0}$ limits with $1 - \cos x$.</td>
+            </tr>
+            <tr>
+              <td>First Principle</td>
+              <td>$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$</td>
+              <td>Whenever question specifies "from first principle".</td>
+            </tr>
+            <tr>
+              <td>Power Rule (Theorem 6)</td>
+              <td>$\frac{d}{dx}(x^n) = n x^{n-1}$, $\frac{d}{dx}(c) = 0$</td>
+              <td>Polynomials, negative &amp; fractional powers.</td>
+            </tr>
+            <tr>
+              <td>Product Rule (Leibnitz)</td>
+              <td>$(u \cdot v)' = u'v + uv'$</td>
+              <td>Product of two functions multiplied together.</td>
+            </tr>
+            <tr>
+              <td>Quotient Rule</td>
+              <td>$\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ ($v \ne 0$)</td>
+              <td>Rational functions $\frac{f(x)}{g(x)}$ and $\tan x, \cot x$.</td>
+            </tr>
+            <tr>
+              <td>Standard Trig Derivatives</td>
+              <td>$(\sin x)' = \cos x$, $(\cos x)' = -\sin x$, $(\tan x)' = \sec^2 x$, $(\cot x)' = -\csc^2 x$</td>
+              <td>Differentiating trigonometric expressions.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 8: 5 EXAM TRAPS -->
+    <section class="module" id="sec-traps">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 8 • Save 10+ Silly Marks!</span>
+          <h2>8. Common 1st PUC Exam Traps (Avoid These!)</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m8"> Mark Mastered</label>
+      </div>
+
+      <div class="traps-grid">
+        <div class="trap-card">
+          <strong>Trap 1: Evaluating $\frac{0}{0}$ directly</strong>
+          <div class="trap-wrong">❌ Writing $\frac{0}{0} = 0$ or $\frac{0}{0} = 1$.</div>
+          <div class="trap-right">✅ Always factor out and cancel $(x - a)$ before substituting $x = a$.</div>
+        </div>
+        <div class="trap-card">
+          <strong>Trap 2: Sign/Denominator error in Quotient Rule</strong>
+          <div class="trap-wrong">❌ Writing $u'v + uv'$ or forgetting $v^2$ at the bottom.</div>
+          <div class="trap-right">✅ Use $\frac{u'v - uv'}{v^2}$: differentiate top $u$ first, use MINUS, square bottom $v$.</div>
+        </div>
+        <div class="trap-card">
+          <strong>Trap 3: Not matching the angle in $\sin(kx)$</strong>
+          <div class="trap-wrong">❌ Writing $\lim_{x \to 0} \frac{\sin 4x}{\sin 2x} = 1$.</div>
+          <div class="trap-right">✅ Rewrite as $\frac{\sin 4x}{4x} \cdot \frac{2x}{\sin 2x} \cdot 2 = 1 \cdot 1 \cdot 2 = 2$.</div>
+        </div>
+        <div class="trap-card">
+          <strong>Trap 4: Assuming $\lim_{x \to a} f(x) = f(a)$</strong>
+          <div class="trap-wrong">❌ Stopping just because $f(a)$ is undefined or equals a dot.</div>
+          <div class="trap-right">✅ Check LHL and RHL near $x = a$ independently of $f(a)$.</div>
+        </div>
+        <div class="trap-card">
+          <strong>Trap 5: Power Rule shortcut on "First Principle"</strong>
+          <div class="trap-wrong">❌ Directly writing $(x^2)' = 2x$ when asked "from first principle".</div>
+          <div class="trap-right">✅ Always start with $\lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$ or you lose full method marks!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 9: PRACTICE BANK & INTERACTIVE QUIZ -->
+    <section class="module" id="sec-practice">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 9 • KSEAB Exam Pattern</span>
+          <h2>9. Interactive Practice Bank &amp; Timed Mini Mock Test</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m9"> Mark Mastered</label>
+      </div>
+
+      <div class="timer-bar">
+        <div>
+          <strong>⏱️ Mini Mock Exam Timer</strong>
+          <div style="font-size:0.8rem;color:var(--muted);">Use this on Dec 7–8 to practice Part A–D under a 60-minute timer!</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span class="timer-display" id="mockTimer">60:00</span>
+          <button class="pill-btn active" id="timerStartBtn">▶ Start</button>
+          <button class="pill-btn" id="timerResetBtn">↺ Reset</button>
+        </div>
+      </div>
+
+      <!-- PART A: MCQs -->
+      <h3>Part A — I. 1-Mark Multiple Choice Questions (Instant Tutor Feedback)</h3>
+      <p style="font-size:0.88rem;color:var(--muted);">Click an option to check your answer immediately. Score: <strong id="mcqScore">0 / 6</strong></p>
+      <div id="mcqContainer"></div>
+
+      <!-- PART A: FILL IN THE BLANKS -->
+      <h3>Part A — II. 1-Mark Fill in the Blanks</h3>
+      <div id="blanksContainer"></div>
+
+      <!-- PART B & C: 2-MARK & 3-MARK -->
+      <h3>Part B &amp; C — 2-Mark &amp; 3-Mark Short Answers (Try First, Then Use Hints!)</h3>
+      <div id="shortAnsContainer"></div>
+
+      <!-- PART D: 5-MARK / 6-MARK -->
+      <h3>Part D — 5-Mark / 6-Mark High-Weightage Questions (Must Master!)</h3>
+      <div class="tutor-tip">
+        <span class="box-label">🏆 Exam Strategy</span>
+        Mastering just <strong>Q1 (Unit Circle Proof of $\frac{\sin x}{x} = 1$)</strong> and <strong>Q2 (Proof of Theorem 2)</strong>
+        below practically guarantees you <strong>5 to 10 marks</strong> on exam day. Practice writing each proof twice on blank paper!
+      </div>
+      <div id="longAnsContainer"></div>
+    </section>
+
+    <!-- SECTION 10: CURATED VIDEOS -->
+    <section class="module" id="sec-videos">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 10 • Guided Video Playlist</span>
+          <h2>10. Best Beginner-Friendly Videos (Watch in Order)</h2>
+        </div>
+        <label class="mastery-toggle"><input type="checkbox" data-mastery="m10"> Mark Mastered</label>
+      </div>
+
+      <p>
+        Don't binge a 4-hour lecture in one night—it causes burnout! Watch these short, targeted videos in order,
+        pausing to solve 1–2 examples in your notebook.
+      </p>
+
+      <div class="video-grid">
+        <div class="video-card">
+          <div>
+            <div class="video-meta">1. QUICK WARMUP • 18 MINS • Next Toppers</div>
+            <h3 style="margin:6px 0;">Full Chapter in 15 Mins (Rapid Revision)</h3>
+            <p style="font-size:0.86rem;color:var(--muted);">Watch this first just to see the whole chapter map without stress.</p>
+          </div>
+          <a class="video-link" href="https://www.youtube.com/watch?v=qRqO5ZxJFHk" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        </div>
+
+        <div class="video-card">
+          <div>
+            <div class="video-meta">2. SLOW &amp; FRIENDLY • WATCH IN 20-MIN CHUNKS • Dear Sir</div>
+            <h3 style="margin:6px 0;">Limits &amp; Derivatives One Shot (NCERT)</h3>
+            <p style="font-size:0.86rem;color:var(--muted);">Very approachable teaching style with lots of worked NCERT examples.</p>
+          </div>
+          <a class="video-link" href="https://www.youtube.com/watch?v=et7nT2Gu1mI" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        </div>
+
+        <div class="video-card">
+          <div>
+            <div class="video-meta">3A. 5-MARK PROOF (ENGLISH) • 12 MINS</div>
+            <h3 style="margin:6px 0;">Prove $\lim_{x\to 0}\frac{\sin x}{x} = 1$ (Geometrical Proof)</h3>
+            <p style="font-size:0.86rem;color:var(--muted);">Clean unit-circle area comparison proof using Sandwich Theorem.</p>
+          </div>
+          <a class="video-link" href="https://www.youtube.com/watch?v=yf2jg1LulNk" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        </div>
+
+        <div class="video-card">
+          <div>
+            <div class="video-meta">3B. KARNATAKA 1st PUC BOARD • 16 MINS • 10POWER100</div>
+            <h3 style="margin:6px 0;">1st PUC Maths: Sandwich Theorem Explained</h3>
+            <p style="font-size:0.86rem;color:var(--muted);">Tailored specifically to KSEAB / Karnataka 1st PUC exam expectations.</p>
+          </div>
+          <a class="video-link" href="https://www.youtube.com/watch?v=4XzoVVep5-Q" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        </div>
+
+        <div class="video-card">
+          <div>
+            <div class="video-meta">4. FIRST PRINCIPLE • 5.5 MINS • Khan Academy India</div>
+            <h3 style="margin:6px 0;">Derivatives Using First Principle (NCERT)</h3>
+            <p style="font-size:0.86rem;color:var(--muted);">Short, crystal-clear walkthrough of algebraic &amp; trig first principle steps.</p>
+          </div>
+          <a class="video-link" href="https://www.youtube.com/watch?v=HvrHNR26irM" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        </div>
+
+        <div class="video-card">
+          <div>
+            <div class="video-meta">5. FAST RULES • 18 MINS • Zahid Khan Academy</div>
+            <h3 style="margin:6px 0;">Power, Product &amp; Quotient Rules for Beginners</h3>
+            <p style="font-size:0.86rem;color:var(--muted);">Step-by-step practice on the 3 core differentiation rules you need most.</p>
+          </div>
+          <a class="video-link" href="https://www.youtube.com/watch?v=KbVNLSd3-6c" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 11: 15-DAY STUDY PLAN & NIGHT-BEFORE REVISION -->
+    <section class="module" id="sec-plan">
+      <div class="module-header">
+        <div>
+          <span class="module-tag">Module 11 • Road to December 10</span>
+          <h2>11. Your 15-Day "Guaranteed 2nd Class+" Study Tracker</h2>
+        </div>
+        <button class="pill-btn" onclick="window.print()">🖨️ Print Cheat Sheet</button>
+      </div>
+
+      <p>Just <strong>45 minutes a day</strong> with a pen and rough notebook. Tick each block as you complete it—your browser remembers your checkmarks!</p>
+
+      <div id="planContainer"></div>
+
+      <h3 style="margin-top:26px;">🌙 5-Minute Night-Before Revision Box (Read on Dec 9 Night!)</h3>
+      <div class="revision-box">
+        <ul style="margin:0;">
+          <li><strong>Existence of Limit:</strong> $\lim_{x \to a} f(x)$ exists iff $\text{LHL} = \text{RHL}$; it does <em>not</em> depend on $f(a)$.</li>
+          <li><strong>$\frac{0}{0}$ Rational Limits:</strong> Factor and cancel $(x - a)$, or use $\lim_{x \to a} \frac{x^n - a^n}{x - a} = n a^{n-1}$.</li>
+          <li><strong>Trig Limits ($x$ in radians):</strong> $\lim_{x \to 0} \frac{\sin x}{x} = 1$ (Sandwich Theorem) and $\lim_{x \to 0} \frac{1 - \cos x}{x} = 0$.</li>
+          <li><strong>First Principle:</strong> $f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$, geometrically equal to the slope of the tangent ($\tan\psi$).</li>
+          <li><strong>Product &amp; Quotient Rules:</strong> $(uv)' = u'v + uv'$ and $\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$.</li>
+          <li><strong>Core Derivatives:</strong> $\frac{d}{dx}(x^n) = nx^{n-1}$, $\frac{d}{dx}(\sin x) = \cos x$, $\frac{d}{dx}(\cos x) = -\sin x$, $\frac{d}{dx}(\text{constant}) = 0$.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer style="text-align:center;color:var(--muted);font-size:0.84rem;padding:12px 0;">
+      Built from your NCERT Class 11 / 1st PUC Limits &amp; Derivatives NotebookLM Notes • Ready for GitHub Pages • You’ve got this on Dec 10! 💪
+    </footer>
+  </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ---------------- 1. KATEX AUTO-RENDER HELPER ----------------
+  function renderMath(el = document.body) {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(el, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  }
+
+  // Wait briefly if KaTeX script is deferred
+  const katexInterval = setInterval(() => {
+    if (typeof renderMathInElement === 'function') {
+      clearInterval(katexInterval);
+      renderMath(document.body);
+    }
+  }, 80);
+
+  // ---------------- 2. THEME & MOBILE MENU ----------------
+  const savedTheme = localStorage.getItem('ld_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const mobileThemeBtn = document.getElementById('mobileThemeBtn');
+
+  function updateThemeBtns() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeToggleBtn.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    mobileThemeBtn.textContent = isDark ? '☀️' : '🌙';
+  }
+  updateThemeBtns();
+
+  function toggleTheme() {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('ld_theme', next);
+    updateThemeBtns();
+    drawLimitCanvas();
+    drawUnitCircle();
+    drawDerivCanvas();
+  }
+  themeToggleBtn.addEventListener('click', toggleTheme);
+  mobileThemeBtn.addEventListener('click', toggleTheme);
+
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  document.getElementById('openMenuBtn').addEventListener('click', () => {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+  });
+
+  // ---------------- 3. EXAM COUNTDOWN (DEC 10, 2026) ----------------
+  function updateCountdown() {
+    const examDate = new Date('2026-12-10T09:00:00');
+    const now = new Date();
+    const diffMs = examDate - now;
+    const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    const pill = document.getElementById('countdownPill');
+    if (days > 0) {
+      pill.textContent = `⏳ ${days} day${days === 1 ? '' : 's'} left until Dec 10 Exam!`;
+    } else if (days === 0) {
+      pill.textContent = '🔥 Exam Day is TODAY — You got this!';
+    } else {
+      pill.textContent = '🎯 Exam Revision Mode Active';
+    }
+  }
+  updateCountdown();
+
+  // ---------------- 4. LOCAL STORAGE PROGRESS TRACKING ----------------
+  const storageKey = 'ld_tutor_state_v1';
+  let state = JSON.parse(localStorage.getItem(storageKey) || '{"mastery":{},"plan":{},"mcq":{}}');
+
+  function saveState() {
+    localStorage.setItem(storageKey, JSON.stringify(state));
+    updateReadiness();
+  }
+
+  document.querySelectorAll('[data-mastery]').forEach(cb => {
+    const key = cb.dataset.mastery;
+    cb.checked = !!state.mastery[key];
+    cb.parentElement.classList.toggle('done', cb.checked);
+    cb.addEventListener('change', () => {
+      state.mastery[key] = cb.checked;
+      cb.parentElement.classList.toggle('done', cb.checked);
+      saveState();
+    });
+  });
+
+  document.getElementById('resetProgressBtn').addEventListener('click', () => {
+    if (confirm('Reset all mastery checkmarks, quiz scores, and study plan progress?')) {
+      localStorage.removeItem(storageKey);
+      location.reload();
+    }
+  });
+
+  // ---------------- 5. INTERACTIVE LAB 1: LHL vs RHL CANVAS ----------------
+  let limMode = 'hole';
+  const limCanvas = document.getElementById('limitCanvas');
+  const limCtx = limCanvas.getContext('2d');
+  const limSlider = document.getElementById('limSlider');
+
+  const limConfigs = {
+    hole: {
+      a: 2,
+      desc: 'Function: $f(x) = \\frac{x^2 - 4}{x - 2}$. At $x=2$, there is a pothole ($\\frac{0}{0}$), so $f(2)$ is undefined—yet both sides aim smoothly at $4$!',
+      fn: x => (Math.abs(x - 2) < 0.001 ? NaN : x + 2),
+      fa: 'Undefined (0/0)',
+      lhl: '4.00',
+      rhl: '4.00',
+      exists: true,
+      verdict: '✅ LHL (4) = RHL (4) → Limit EXISTS and equals 4! (Even with a hole!)'
+    },
+    jump: {
+      a: 0,
+      desc: 'NCERT Fig. 13.6 style: $f(x) = x - 2$ for $x < 0$, $f(0) = 0$, and $f(x) = x + 2$ for $x > 0$. Notice the cliff jump at $x=0$!',
+      fn: x => (x < -0.001 ? x - 2 : (x > 0.001 ? x + 2 : 0)),
+      fa: '0 (solid dot)',
+      lhl: '-2.00',
+      rhl: '+2.00',
+      exists: false,
+      verdict: '❌ LHL (-2) ≠ RHL (+2) → Limit DOES NOT EXIST! (Even though f(0)=0.)'
+    },
+    smooth: {
+      a: 2,
+      desc: 'Continuous polynomial: $f(x) = x + 1$. No holes, no jumps—LHL, RHL, and $f(2)$ all meet at $3$!',
+      fn: x => x + 1,
+      fa: '3.00',
+      lhl: '3.00',
+      rhl: '3.00',
+      exists: true,
+      verdict: '✅ LHL (3) = RHL (3) = f(2) → Smooth & Continuous! Limit = 3.'
+    }
+  };
+
+  function getThemeColors() {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      bg: dark ? '#161f30' : '#ffffff',
+      grid: dark ? '#26344d' : '#e6edf7',
+      axis: dark ? '#7e93b5' : '#64748b',
+      text: dark ? '#e2e8f0' : '#1e293b'
+    };
+  }
+
+  function drawLimitCanvas() {
+    const cfg = limConfigs[limMode];
+    const c = getThemeColors();
+    const W = limCanvas.width, H = limCanvas.height;
+    limCtx.clearRect(0, 0, W, H);
+    limCtx.fillStyle = c.bg;
+    limCtx.fillRect(0, 0, W, H);
+
+    const xMin = cfg.a - 2.2, xMax = cfg.a + 2.2;
+    const yMin = limMode === 'jump' ? -4.5 : -0.5;
+    const yMax = limMode === 'jump' ? 4.5 : 6.5;
+
+    const toPx = x => ((x - xMin) / (xMax - xMin)) * (W - 60) + 40;
+    const toPy = y => H - 30 - ((y - yMin) / (yMax - yMin)) * (H - 50);
+
+    // Grid
+    limCtx.strokeStyle = c.grid;
+    limCtx.lineWidth = 1;
+    for (let gx = Math.ceil(xMin); gx <= Math.floor(xMax); gx++) {
+      limCtx.beginPath(); limCtx.moveTo(toPx(gx), 15); limCtx.lineTo(toPx(gx), H - 25); limCtx.stroke();
+    }
+    for (let gy = Math.ceil(yMin); gy <= Math.floor(yMax); gy++) {
+      limCtx.beginPath(); limCtx.moveTo(35, toPy(gy)); limCtx.lineTo(W - 15, toPy(gy)); limCtx.stroke();
+    }
+
+    // Axes
+    limCtx.strokeStyle = c.axis;
+    limCtx.lineWidth = 1.6;
+    if (0 >= xMin && 0 <= xMax) {
+      limCtx.beginPath(); limCtx.moveTo(toPx(0), 15); limCtx.lineTo(toPx(0), H - 25); limCtx.stroke();
+    }
+    if (0 >= yMin && 0 <= yMax) {
+      limCtx.beginPath(); limCtx.moveTo(35, toPy(0)); limCtx.lineTo(W - 15, toPy(0)); limCtx.stroke();
+    }
+
+    // Target vertical dashed line x = a
+    limCtx.setLineDash([5, 5]);
+    limCtx.strokeStyle = '#94a3b8';
+    limCtx.beginPath(); limCtx.moveTo(toPx(cfg.a), 15); limCtx.lineTo(toPx(cfg.a), H - 25); limCtx.stroke();
+    limCtx.setLineDash([]);
+
+    // Draw Left Curve (Blue)
+    limCtx.strokeStyle = '#2563eb';
+    limCtx.lineWidth = 3;
+    limCtx.beginPath();
+    let started = false;
+    for (let x = xMin; x < cfg.a - 0.02; x += 0.03) {
+      const y = cfg.fn(x);
+      if (!started) { limCtx.moveTo(toPx(x), toPy(y)); started = true; }
+      else limCtx.lineTo(toPx(x), toPy(y));
+    }
+    limCtx.stroke();
+
+    // Draw Right Curve (Orange)
+    limCtx.strokeStyle = '#ea580c';
+    limCtx.lineWidth = 3;
+    limCtx.beginPath();
+    started = false;
+    for (let x = cfg.a + 0.02; x <= xMax; x += 0.03) {
+      const y = cfg.fn(x);
+      if (!started) { limCtx.moveTo(toPx(x), toPy(y)); started = true; }
+      else limCtx.lineTo(toPx(x), toPy(y));
+    }
+    limCtx.stroke();
+
+    // Open / Solid markers at x = a
+    function drawDot(x, y, fill, stroke) {
+      limCtx.beginPath();
+      limCtx.arc(toPx(x), toPy(y), 6, 0, Math.PI * 2);
+      limCtx.fillStyle = fill;
+      limCtx.fill();
+      limCtx.lineWidth = 2.5;
+      limCtx.strokeStyle = stroke;
+      limCtx.stroke();
+    }
+    if (limMode === 'hole') {
+      drawDot(2, 4, c.bg, '#2563eb');
+    } else if (limMode === 'jump') {
+      drawDot(0, -2, c.bg, '#2563eb');
+      drawDot(0, 2, c.bg, '#ea580c');
+      drawDot(0, 0, '#16a34a', '#16a34a');
+    } else {
+      drawDot(2, 3, '#16a34a', '#16a34a');
+    }
+
+    // Moving walker dot
+    const offset = parseFloat(limSlider.value);
+    const curX = cfg.a + offset;
+    const curY = cfg.fn(curX);
+
+    if (!Number.isNaN(curY)) {
+      limCtx.setLineDash([3, 3]);
+      limCtx.strokeStyle = offset < 0 ? '#2563eb' : '#ea580c';
+      limCtx.lineWidth = 1.5;
+      limCtx.beginPath();
+      limCtx.moveTo(toPx(curX), toPy(yMin));
+      limCtx.lineTo(toPx(curX), toPy(curY));
+      limCtx.lineTo(35, toPy(curY));
+      limCtx.stroke();
+      limCtx.setLineDash([]);
+      drawDot(curX, curY, offset < 0 ? '#2563eb' : '#ea580c', '#ffffff');
+    }
+
+    // Labels
+    limCtx.fillStyle = c.text;
+    limCtx.font = 'bold 12px Inter, sans-serif';
+    limCtx.fillText(`x = a (${cfg.a})`, toPx(cfg.a) + 6, 28);
+    limCtx.fillStyle = '#2563eb';
+    limCtx.fillText('← Left side (LHL)', 46, 28);
+    limCtx.fillStyle = '#ea580c';
+    limCtx.fillText('Right side (RHL) →', W - 138, 28);
+
+    // Update UI Readouts
+    document.getElementById('limXVal').textContent = `x = ${curX.toFixed(2)}`;
+    document.getElementById('limFxVal').textContent = Number.isNaN(curY) ? 'Undefined!' : curY.toFixed(2);
+    document.getElementById('limFaVal').textContent = cfg.fa;
+    document.getElementById('limLhlVal').textContent = cfg.lhl;
+    document.getElementById('limRhlVal').textContent = cfg.rhl;
+    const verdictEl = document.getElementById('limVerdict');
+    verdictEl.textContent = cfg.verdict;
+    verdictEl.style.background = cfg.exists ? 'var(--success-soft)' : 'var(--danger-soft)';
+    verdictEl.style.color = cfg.exists ? 'var(--success)' : 'var(--danger)';
+  }
+
+  function setLimMode(mode) {
+    limMode = mode;
+    document.querySelectorAll('[data-lim-mode]').forEach(b => b.classList.toggle('active', b.dataset.limMode === mode));
+    const descEl = document.getElementById('limDesc');
+    descEl.innerHTML = limConfigs[mode].desc;
+    renderMath(descEl);
+    drawLimitCanvas();
+  }
+  document.querySelectorAll('[data-lim-mode]').forEach(btn => {
+    btn.addEventListener('click', () => setLimMode(btn.dataset.limMode));
+  });
+  limSlider.addEventListener('input', drawLimitCanvas);
+  setLimMode('hole');
+
+  // ---------------- 6. INTERACTIVE LAB 2: 0/0 CANCELLATION FUNNEL ----------------
+  const funnelData = [
+    [
+      { tag: 'Step 1: Direct Substitution', text: 'Plug $x = 2$ into $\\frac{x^2 - 4}{x - 2} \\implies \\frac{2^2 - 4}{2 - 2} = \\frac{0}{0}$. 🚨 <strong>Indeterminate Form!</strong>' },
+      { tag: 'Step 2: Factor Out Troublemaker $(x - 2)$', text: 'Use $a^2 - b^2 = (a-b)(a+b)$: $$\\lim_{x \\to 2} \\frac{(x - 2)(x + 2)}{(x - 2)}$$' },
+      { tag: 'Step 3: Cancel $(x - 2)$', text: 'Since $x \\to 2$ means $x \\ne 2$, cancel $(x-2)$ cleanly: $$\\lim_{x \\to 2} (x + 2)$$' },
+      { tag: 'Step 4: Plug In $x = 2$ Again', text: 'Now substitute $x = 2$: $2 + 2 = \\mathbf{4}$. 🎉 Done!' }
+    ],
+    [
+      { tag: 'Step 1: Direct Substitution', text: 'Plug $x = 2$ into $\\frac{x^3 - 2x^2}{x^2 - 5x + 6} \\implies \\frac{8 - 8}{4 - 10 + 6} = \\frac{0}{0}$. 🚨 <strong>Alarm Bell!</strong>' },
+      { tag: 'Step 2: Factor Top & Bottom', text: 'Factor $x^2$ from top and split middle term on bottom: $$\\lim_{x \\to 2} \\frac{x^2(x - 2)}{(x - 2)(x - 3)}$$' },
+      { tag: 'Step 3: Cancel $(x - 2)$', text: 'The troublemaker $(x - 2)$ cancels out! We are left with: $$\\lim_{x \\to 2} \\frac{x^2}{x - 3}$$' },
+      { tag: 'Step 4: Plug In $x = 2$', text: 'Substitute $x = 2$: $\\frac{2^2}{2 - 3} = \\frac{4}{-1} = \\mathbf{-4}$. 🎉 Full 2 marks!' }
+    ],
+    [
+      { tag: 'Step 1: Direct Substitution', text: 'Plug $x = 2$ into $\\frac{x^3 - 8}{x - 2} \\implies \\frac{8 - 8}{2 - 2} = \\frac{0}{0}$.' },
+      { tag: 'Step 2: Spot Theorem 2 Pattern', text: 'Rewrite $8 = 2^3$ so it matches $\\frac{x^n - a^n}{x - a}$: $$\\lim_{x \\to 2} \\frac{x^3 - 2^3}{x - 2}$$' },
+      { tag: 'Step 3: Apply $\\lim_{x\\to a}\\frac{x^n-a^n}{x-a} = na^{n-1}$', text: 'Here $n = 3$ and $a = 2$. Plug into $n a^{n-1}$: $$3 \\times 2^{3 - 1} = 3 \\times 2^2$$' },
+      { tag: 'Step 4: Simplify', text: '$3 \\times 4 = \\mathbf{12}$. 🎉 Zero long division needed!' }
+    ]
+  ];
+  let currentFunnel = 0;
+  let funnelStepIdx = 1;
+
+  function renderFunnel() {
+    const container = document.getElementById('funnelContainer');
+    container.innerHTML = funnelData[currentFunnel].map((s, idx) => `
+      <div class="funnel-step ${idx < funnelStepIdx ? 'revealed' : ''}">
+        <span class="step-badge">${s.tag}</span>
+        <div>${idx < funnelStepIdx ? s.text : '<em>Click "Reveal Next Step" above to unlock...</em>'}</div>
+      </div>
+    `).join('');
+    renderMath(container);
+  }
+  document.querySelectorAll('[data-funnel]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentFunnel = parseInt(btn.dataset.funnel, 10);
+      funnelStepIdx = 1;
+      document.querySelectorAll('[data-funnel]').forEach(b => b.classList.toggle('active', b === btn));
+      renderFunnel();
+    });
+  });
+  document.getElementById('funnelNextBtn').addEventListener('click', () => {
+    if (funnelStepIdx < funnelData[currentFunnel].length) {
+      funnelStepIdx++;
+      renderFunnel();
+    }
+  });
+  document.getElementById('funnelResetBtn').addEventListener('click', () => {
+    funnelStepIdx = 1;
+    renderFunnel();
+  });
+  renderFunnel();
+
+  // ---------------- 7. INTERACTIVE LAB 3: UNIT CIRCLE SANDWICH CANVAS ----------------
+  const ucCanvas = document.getElementById('unitCircleCanvas');
+  const ucCtx = ucCanvas.getContext('2d');
+  const angleSlider = document.getElementById('angleSlider');
+
+  function drawUnitCircle() {
+    const x = parseFloat(angleSlider.value);
+    const c = getThemeColors();
+    const W = ucCanvas.width, H = ucCanvas.height;
+    ucCtx.clearRect(0, 0, W, H);
+    ucCtx.fillStyle = c.bg;
+    ucCtx.fillRect(0, 0, W, H);
+
+    const ox = 85, oy = H - 55;
+    const R = 215;
+
+    const ax = ox + R, ay = oy;
+    const cx = ox + R * Math.cos(x), cy = oy - R * Math.sin(x);
+    const dx = cx, dy = oy;
+    const bx = ox + R, by = oy - R * Math.tan(x);
+
+    // Big Triangle OAB (light orange)
+    ucCtx.fillStyle = 'rgba(234, 88, 12, 0.12)';
+    ucCtx.beginPath();
+    ucCtx.moveTo(ox, oy); ucCtx.lineTo(ax, ay); ucCtx.lineTo(bx, Math.max(by, -400));
+    ucCtx.closePath(); ucCtx.fill();
+
+    // Sector OAC (light teal)
+    ucCtx.fillStyle = 'rgba(14, 165, 164, 0.20)';
+    ucCtx.beginPath();
+    ucCtx.moveTo(ox, oy);
+    ucCtx.arc(ox, oy, R, 0, -x, true);
+    ucCtx.closePath(); ucCtx.fill();
+
+    // Small Triangle OAC (light blue)
+    ucCtx.fillStyle = 'rgba(37, 99, 235, 0.25)';
+    ucCtx.beginPath();
+    ucCtx.moveTo(ox, oy); ucCtx.lineTo(ax, ay); ucCtx.lineTo(cx, cy);
+    ucCtx.closePath(); ucCtx.fill();
+
+    // Quarter circle arc
+    ucCtx.strokeStyle = c.axis;
+    ucCtx.lineWidth = 1.6;
+    ucCtx.beginPath();
+    ucCtx.arc(ox, oy, R, 0, -Math.PI / 2, true);
+    ucCtx.stroke();
+
+    // Base OA & Radius OB
+    ucCtx.strokeStyle = c.text;
+    ucCtx.lineWidth = 2;
+    ucCtx.beginPath(); ucCtx.moveTo(ox, oy); ucCtx.lineTo(ax + 25, oy); ucCtx.stroke();
+    ucCtx.beginPath(); ucCtx.moveTo(ox, oy); ucCtx.lineTo(bx, by); ucCtx.stroke();
+
+    // Chord AC
+    ucCtx.strokeStyle = '#2563eb';
+    ucCtx.lineWidth = 2;
+    ucCtx.beginPath(); ucCtx.moveTo(ax, ay); ucCtx.lineTo(cx, cy); ucCtx.stroke();
+
+    // Perpendicular CD (sin x)
+    ucCtx.strokeStyle = '#2563eb';
+    ucCtx.setLineDash([5, 4]);
+    ucCtx.beginPath(); ucCtx.moveTo(cx, cy); ucCtx.lineTo(dx, dy); ucCtx.stroke();
+    ucCtx.setLineDash([]);
+
+    // Tangent AB (tan x)
+    ucCtx.strokeStyle = '#ea580c';
+    ucCtx.lineWidth = 2.5;
+    ucCtx.beginPath(); ucCtx.moveTo(ax, ay); ucCtx.lineTo(bx, by); ucCtx.stroke();
+
+    // Angle arc
+    ucCtx.strokeStyle = '#16a34a';
+    ucCtx.lineWidth = 2;
+    ucCtx.beginPath();
+    ucCtx.arc(ox, oy, 42, 0, -x, true);
+    ucCtx.stroke();
+
+    // Labels
+    ucCtx.fillStyle = c.text;
+    ucCtx.font = 'bold 13px Inter, sans-serif';
+    ucCtx.fillText('O (0,0)', ox - 48, oy + 18);
+    ucCtx.fillText('A (1,0)', ax - 12, oy + 20);
+    ucCtx.fillText('D', dx - 5, dy + 18);
+    ucCtx.fillText('C', cx - 16, cy - 8);
+    if (by > 16) ucCtx.fillText('B', bx + 8, by + 4);
+    ucCtx.fillStyle = '#16a34a';
+    ucCtx.fillText(`x = ${x.toFixed(2)}`, ox + 48, oy - 10);
+    ucCtx.fillStyle = '#2563eb';
+    ucCtx.fillText('sin x', cx - 38, (cy + dy) / 2);
+    ucCtx.fillStyle = '#ea580c';
+    ucCtx.fillText('tan x', ax + 8, Math.max((ay + by) / 2, 35));
+
+    // Readouts
+    const sinx = Math.sin(x), cosx = Math.cos(x), tanx = Math.tan(x);
+    const ratio = sinx / x;
+    document.getElementById('angleVal').textContent = `${x.toFixed(2)} rad (${(x * 180 / Math.PI).toFixed(1)}°)`;
+    document.getElementById('areaSmall').textContent = (0.5 * sinx).toFixed(4);
+    document.getElementById('areaSector').textContent = (0.5 * x).toFixed(4);
+    document.getElementById('areaBig').textContent = (0.5 * tanx).toFixed(4);
+    document.getElementById('ratioSinX').textContent = ratio.toFixed(5);
+    document.getElementById('sandwichReadout').textContent =
+      `cos(x) = ${cosx.toFixed(5)}  <  sin(x)/x = ${ratio.toFixed(5)}  <  1.00000`;
+  }
+  angleSlider.addEventListener('input', drawUnitCircle);
+  drawUnitCircle();
+
+  // ---------------- 8. INTERACTIVE LAB 4: SECANT TO TANGENT CANVAS ----------------
+  const dCanvas = document.getElementById('derivCanvas');
+  const dCtx = dCanvas.getContext('2d');
+  const dxSlider = document.getElementById('derivXSlider');
+  const dhSlider = document.getElementById('derivHSlider');
+
+  function drawDerivCanvas() {
+    const x0 = parseFloat(dxSlider.value);
+    const h = parseFloat(dhSlider.value);
+    const c = getThemeColors();
+    const W = dCanvas.width, H = dCanvas.height;
+    dCtx.clearRect(0, 0, W, H);
+    dCtx.fillStyle = c.bg;
+    dCtx.fillRect(0, 0, W, H);
+
+    const xMin = -0.3, xMax = 4.2, yMin = -0.5, yMax = 14.5;
+    const toPx = x => ((x - xMin) / (xMax - xMin)) * (W - 55) + 38;
+    const toPy = y => H - 30 - ((y - yMin) / (yMax - yMin)) * (H - 48);
+
+    // Grid
+    dCtx.strokeStyle = c.grid;
+    dCtx.lineWidth = 1;
+    for (let gx = 0; gx <= 4; gx++) {
+      dCtx.beginPath(); dCtx.moveTo(toPx(gx), 12); dCtx.lineTo(toPx(gx), H - 25); dCtx.stroke();
+    }
+    for (let gy = 0; gy <= 14; gy += 2) {
+      dCtx.beginPath(); dCtx.moveTo(35, toPy(gy)); dCtx.lineTo(W - 15, toPy(gy)); dCtx.stroke();
+    }
+
+    // Axes
+    dCtx.strokeStyle = c.axis;
+    dCtx.lineWidth = 1.6;
+    dCtx.beginPath(); dCtx.moveTo(toPx(0), 12); dCtx.lineTo(toPx(0), H - 25); dCtx.stroke();
+    dCtx.beginPath(); dCtx.moveTo(35, toPy(0)); dCtx.lineTo(W - 15, toPy(0)); dCtx.stroke();
+
+    // Curve f(x) = x^2
+    dCtx.strokeStyle = '#2563eb';
+    dCtx.lineWidth = 3;
+    dCtx.beginPath();
+    for (let x = 0; x <= 3.8; x += 0.04) {
+      const y = x * x;
+      if (x === 0) dCtx.moveTo(toPx(x), toPy(y));
+      else dCtx.lineTo(toPx(x), toPy(y));
+    }
+    dCtx.stroke();
+
+    const y0 = x0 * x0;
+    const x1 = x0 + h;
+    const y1 = x1 * x1;
+    const secSlope = (y1 - y0) / h;
+    const tanSlope = 2 * x0;
+
+    // Exact Tangent Line (Green Dashed)
+    dCtx.strokeStyle = '#16a34a';
+    dCtx.lineWidth = 2.4;
+    dCtx.setLineDash([6, 4]);
+    dCtx.beginPath();
+    dCtx.moveTo(toPx(x0 - 1.2), toPy(y0 - tanSlope * 1.2));
+    dCtx.lineTo(toPx(x0 + 1.8), toPy(y0 + tanSlope * 1.8));
+    dCtx.stroke();
+    dCtx.setLineDash([]);
+
+    // Secant Line (Orange)
+    dCtx.strokeStyle = '#ea580c';
+    dCtx.lineWidth = 2.4;
+    dCtx.beginPath();
+    dCtx.moveTo(toPx(x0 - 0.6), toPy(y0 - secSlope * 0.6));
+    dCtx.lineTo(toPx(x1 + 0.6), toPy(y1 + secSlope * 0.6));
+    dCtx.stroke();
+
+    // Triangle PQR
+    dCtx.strokeStyle = '#9333ea';
+    dCtx.lineWidth = 1.6;
+    dCtx.beginPath();
+    dCtx.moveTo(toPx(x0), toPy(y0));
+    dCtx.lineTo(toPx(x1), toPy(y0));
+    dCtx.lineTo(toPx(x1), toPy(y1));
+    dCtx.stroke();
+
+    // Points P and Q
+    function dot(x, y, color, label) {
+      dCtx.beginPath();
+      dCtx.arc(toPx(x), toPy(y), 5.5, 0, Math.PI * 2);
+      dCtx.fillStyle = color;
+      dCtx.fill();
+      dCtx.fillStyle = c.text;
+      dCtx.font = 'bold 12px Inter, sans-serif';
+      dCtx.fillText(label, toPx(x) - 18, toPy(y) - 9);
+    }
+    dot(x0, y0, '#16a34a', `P(${x0}, ${y0.toFixed(1)})`);
+    dot(x1, y1, '#ea580c', 'Q');
+
+    dCtx.fillStyle = '#9333ea';
+    dCtx.font = 'bold 11px Inter, sans-serif';
+    if (h > 0.25) dCtx.fillText(`h = ${h.toFixed(2)}`, toPx(x0 + h / 2) - 16, toPy(y0) + 15);
+
+    // Legend
+    dCtx.fillStyle = '#2563eb'; dCtx.fillText('Curve: f(x) = x²', 48, 26);
+    dCtx.fillStyle = '#ea580c'; dCtx.fillText('— Secant PQ', 168, 26);
+    dCtx.fillStyle = '#16a34a'; dCtx.fillText('--- Tangent at P', 270, 26);
+
+    // UI Readouts
+    document.getElementById('derivXVal').textContent = x0.toFixed(1);
+    document.getElementById('derivHVal').textContent = h.toFixed(2);
+    document.getElementById('secSlope').textContent = secSlope.toFixed(3);
+    document.getElementById('tanSlope').textContent = tanSlope.toFixed(3);
+  }
+  dxSlider.addEventListener('input', drawDerivCanvas);
+  dhSlider.addEventListener('input', drawDerivCanvas);
+  drawDerivCanvas();
+
+  // ---------------- 9. RULE PICKER ----------------
+  const rulePickData = {
+    poly: {
+      title: 'Use: Power Rule + Sum/Difference Rule',
+      steps: 'Differentiate term-by-term: $\\frac{d}{dx}(3x^4 - 5x^2 + 9) = 3(4x^3) - 5(2x^1) + 0 = \\mathbf{12x^3 - 10x}$.'
+    },
+    prod: {
+      title: 'Use: Product Rule $(uv)\' = u\'v + uv\'$',
+      steps: 'Let $u = x^4$ ($u\' = 4x^3$) and $v = 5\\sin x - 3\\cos x$ ($v\' = 5\\cos x + 3\\sin x$).<br>Then $f\'(x) = (4x^3)(5\\sin x - 3\\cos x) + x^4(5\\cos x + 3\\sin x)$.'
+    },
+    quot: {
+      title: 'Use: Quotient Rule $\\left(\\frac{u}{v}\\right)\' = \\frac{u\'v - uv\'}{v^2}$',
+      steps: 'Let $u = x^5 - \\cos x$ ($u\' = 5x^4 + \\sin x$) and $v = \\sin x$ ($v\' = \\cos x$).<br>Then $f\'(x) = \\frac{(5x^4 + \\sin x)\\sin x - (x^5 - \\cos x)\\cos x}{\\sin^2 x}$.'
+    },
+    trig: {
+      title: 'Use: Quotient Rule on $\\tan x = \\frac{\\sin x}{\\cos x}$',
+      steps: '$\\frac{d}{dx}\\left(\\frac{\\sin x}{\\cos x}\\right) = \\frac{(\\cos x)(\\cos x) - (\\sin x)(-\\sin x)}{\\cos^2 x} = \\frac{\\cos^2 x + \\sin^2 x}{\\cos^2 x} = \\frac{1}{\\cos^2 x} = \\mathbf{\\sec^2 x}$.'
+    }
+  };
+  function showRulePick(key) {
+    document.querySelectorAll('[data-rulepick]').forEach(b => b.classList.toggle('active', b.dataset.rulepick === key));
+    const el = document.getElementById('rulePickOutput');
+    el.innerHTML = `<strong style="color:var(--primary);display:block;margin-bottom:6px;">${rulePickData[key].title}</strong><div>${rulePickData[key].steps}</div>`;
+    renderMath(el);
+  }
+  document.querySelectorAll('[data-rulepick]').forEach(b => b.addEventListener('click', () => showRulePick(b.dataset.rulepick)));
+  showRulePick('poly');
+
+  // ---------------- 10. FORMULA FLASHCARDS ----------------
+  let flashcards = [
+    { q: 'Condition for $\\lim_{x \\to a} f(x)$ to exist?', a: '$\\lim_{x \\to a^-} f(x) = \\lim_{x \\to a^+} f(x)$', tip: 'LHL must equal RHL (independent of $f(a)$).' },
+    { q: 'Power Limit (Theorem 2): $\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = ?$', a: '$n a^{n-1}$', tip: 'Works for positive integers $n$ and rational $n$ ($a > 0$).' },
+    { q: 'Standard Sine Limit: $\\lim_{x \\to 0} \\frac{\\sin x}{x} = ?$', a: '$1$', tip: 'Angle $x$ must be in radians! Match $\\sin(kx)$ with $kx$.' },
+    { q: 'Standard Cosine Limit: $\\lim_{x \\to 0} \\frac{1 - \\cos x}{x} = ?$', a: '$0$', tip: 'Proved using $1 - \\cos x = 2\\sin^2(x/2)$.' },
+    { q: 'First Principle of Derivative: $f\'(x) = ?$', a: '$\\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$', tip: 'Always write this first when asked "from first principle"!' },
+    { q: 'Power Rule: $\\frac{d}{dx}(x^n) = ?$ and $\\frac{d}{dx}(\\text{constant}) = ?$', a: '$n x^{n-1}$ &nbsp;and&nbsp; $0$', tip: 'Drop power to front, subtract 1 from exponent.' },
+    { q: 'Product Rule (Leibnitz): $(u \\cdot v)\' = ?$', a: '$u\'v + u v\'$', tip: 'Plus sign in the middle!' },
+    { q: 'Quotient Rule: $\\left(\\frac{u}{v}\\right)\' = ?$', a: '$\\frac{u\'v - u v\'}{v^2}$', tip: 'Differentiate top first, MINUS sign, square the bottom!' },
+    { q: 'Derivatives of $\\sin x$ and $\\cos x$?', a: '$(\\sin x)\' = \\cos x$, &nbsp; $(\\cos x)\' = -\\sin x$', tip: 'Remember: "co-" functions get a minus sign!' },
+    { q: 'Derivatives of $\\tan x$ and $\\cot x$?', a: '$(\\tan x)\' = \\sec^2 x$, &nbsp; $(\\cot x)\' = -\\csc^2 x$', tip: 'Both can be derived quickly using Quotient Rule.' }
+  ];
+  let fcIdx = 0, fcFlipped = false;
+
+  function renderFlashcard() {
+    const card = flashcards[fcIdx];
+    document.getElementById('fcCounter').textContent = `Card ${fcIdx + 1} / ${flashcards.length}`;
+    document.getElementById('fcSideTag').textContent = fcFlipped ? 'ANSWER — CLICK TO FLIP BACK' : 'QUESTION — CLICK TO REVEAL FORMULA';
+    document.getElementById('fcBody').innerHTML = fcFlipped ? card.a : card.q;
+    document.getElementById('fcSub').innerHTML = fcFlipped ? `💡 ${card.tip}` : 'Try saying it out loud before flipping!';
+    renderMath(document.getElementById('flashcardBox'));
+  }
+  document.getElementById('flashcardBox').addEventListener('click', () => { fcFlipped = !fcFlipped; renderFlashcard(); });
+  document.getElementById('fcFlipBtn').addEventListener('click', () => { fcFlipped = !fcFlipped; renderFlashcard(); });
+  document.getElementById('fcPrevBtn').addEventListener('click', () => { fcIdx = (fcIdx - 1 + flashcards.length) % flashcards.length; fcFlipped = false; renderFlashcard(); });
+  document.getElementById('fcNextBtn').addEventListener('click', () => { fcIdx = (fcIdx + 1) % flashcards.length; fcFlipped = false; renderFlashcard(); });
+  document.getElementById('fcShuffleBtn').addEventListener('click', () => {
+    flashcards.sort(() => Math.random() - 0.5);
+    fcIdx = 0; fcFlipped = false; renderFlashcard();
+  });
+  renderFlashcard();
+
+  // ---------------- 11. PART A: MCQs ----------------
+  const mcqs = [
+    {
+      id: 'q1',
+      q: '1. $\\lim_{x \\to 1} [x^3 - x^2 + 1]$ is equal to:',
+      opts: ['(a) $0$', '(b) $1$', '(c) $2$', '(d) $-1$'],
+      ans: 1,
+      exp: 'It is a polynomial! Directly plug in $x = 1$: $1^3 - 1^2 + 1 = 1 - 1 + 1 = \\mathbf{1}$.'
+    },
+    {
+      id: 'q2',
+      q: '2. $\\lim_{x \\to 0} \\frac{\\sin 4x}{\\sin 2x}$ is equal to:',
+      opts: ['(a) $1$', '(b) $\\frac{1}{2}$', '(c) $2$', '(d) $4$'],
+      ans: 2,
+      exp: 'Match the angles! $\\frac{\\sin 4x}{4x} \\cdot \\frac{2x}{\\sin 2x} \\cdot \\frac{4x}{2x} = 1 \\cdot 1 \\cdot 2 = \\mathbf{2}$.'
+    },
+    {
+      id: 'q3',
+      q: '3. If $f(x) = |x|$ for $x \\ne 0$, then $\\lim_{x \\to 0} f(x)$ is:',
+      opts: ['(a) $0$', '(b) $1$', '(c) $-1$', '(d) Does not exist'],
+      ans: 0,
+      exp: 'Both LHL ($\\lim_{x\\to 0^-} (-x) = 0$) and RHL ($\\lim_{x\\to 0^+} x = 0$) meet at $\\mathbf{0}$!'
+    },
+    {
+      id: 'q4',
+      q: '4. The derivative of a constant function $f(x) = a$ is:',
+      opts: ['(a) $a$', '(b) $1$', '(c) $0$', '(d) $-a$'],
+      ans: 2,
+      exp: 'A constant never changes, so its rate of change (derivative) is always $\\mathbf{0}$.'
+    },
+    {
+      id: 'q5',
+      q: '5. The geometric meaning of $f\'(a)$ for $y = f(x)$ at $P(a, f(a))$ is the:',
+      opts: ['(a) Length of chord', '(b) Slope of tangent at $P$', '(c) Area under curve', '(d) $y$-intercept'],
+      ans: 1,
+      exp: 'Geometrically, $f\'(a) = \\tan\\psi$, which is the <strong>slope of the tangent</strong> to the curve at $P$.'
+    },
+    {
+      id: 'q6',
+      q: '6. $\\frac{d}{dx}(\\cot x)$ is equal to:',
+      opts: ['(a) $\\sec^2 x$', '(b) $-\\sec^2 x$', '(c) $\\csc^2 x$', '(d) $-\\csc^2 x$'],
+      ans: 3,
+      exp: 'Remember the "co-" rule! $\\cot x$ starts with "co-", so it gets a minus sign: $\\mathbf{-\\csc^2 x}$.'
+    }
+  ];
+
+  const mcqContainer = document.getElementById('mcqContainer');
+  function updateMcqScore() {
+    const score = mcqs.filter(m => state.mcq[m.id] === m.ans).length;
+    document.getElementById('mcqScore').textContent = `${score} / ${mcqs.length}`;
+  }
+  mcqs.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = `
+      <div class="quiz-q">${m.q}</div>
+      <div class="options-grid">
+        ${m.opts.map((o, i) => `<button class="opt-btn" data-opt="${i}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="fb-${m.id}"></div>
+    `;
+    const btns = card.querySelectorAll('.opt-btn');
+    const fb = card.querySelector(`#fb-${m.id}`);
+
+    function applyChoice(idx) {
+      btns.forEach((b, i) => {
+        b.classList.remove('correct', 'wrong');
+        if (i === m.ans) b.classList.add('correct');
+        else if (i === idx && idx !== m.ans) b.classList.add('wrong');
+      });
+      const ok = idx === m.ans;
+      fb.className = `quiz-feedback show ${ok ? 'ok' : 'no'}`;
+      fb.innerHTML = (ok ? '🎉 <strong>Spot on!</strong> ' : '💡 <strong>Almost!</strong> ') + m.exp;
+      renderMath(fb);
+    }
+
+    btns.forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        state.mcq[m.id] = i;
+        applyChoice(i);
+        updateMcqScore();
+        saveState();
+      });
+    });
+
+    if (typeof state.mcq[m.id] === 'number') {
+      applyChoice(state.mcq[m.id]);
+    }
+    mcqContainer.appendChild(card);
+  });
+  updateMcqScore();
+
+  // ---------------- 12. PART A: FILL IN THE BLANKS ----------------
+  const blanks = [
+    { q: '7. If $\\lim_{x \\to a^-} f(x) = \\lim_{x \\to a^+} f(x)$, their common value is called the ________ of $f(x)$ at $x = a$.', accepted: ['limit'], display: '<strong>Limit</strong>' },
+    { q: '8. $\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} =$ ________', accepted: ['na^(n-1)', 'n*a^(n-1)', 'na^n-1'], display: '$n a^{n-1}$' },
+    { q: '9. $\\lim_{x \\to 0} \\frac{1 - \\cos x}{x} =$ ________', accepted: ['0', 'zero'], display: '$0$' },
+    { q: '10. The Leibnitz rule for differentiating the product of $u$ and $v$ is $(uv)\' =$ ________', accepted: ["u'v+uv'", "uv'+u'v", "vu'+uv'"], display: "$u'v + uv'$" }
+  ];
+  const blanksContainer = document.getElementById('blanksContainer');
+  blanks.forEach((b, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.innerHTML = `
+      <div class="quiz-q">${b.q}</div>
+      <div class="blank-row">
+        <input class="blank-input" type="text" placeholder="Type your answer..." id="blank-in-${idx}">
+        <button class="pill-btn active" id="blank-chk-${idx}">Check</button>
+        <button class="pill-btn" id="blank-rev-${idx}">Reveal Answer</button>
+      </div>
+      <div class="quiz-feedback" id="blank-fb-${idx}"></div>
+    `;
+    blanksContainer.appendChild(card);
+    const inp = card.querySelector(`#blank-in-${idx}`);
+    const fb = card.querySelector(`#blank-fb-${idx}`);
+    card.querySelector(`#blank-chk-${idx}`).addEventListener('click', () => {
+      const val = inp.value.trim().toLowerCase().replace(/\s+/g, '');
+      const ok = b.accepted.includes(val);
+      fb.className = `quiz-feedback show ${ok ? 'ok' : 'no'}`;
+      fb.innerHTML = ok
+        ? `✅ <strong>Correct!</strong> Answer: ${b.display}`
+        : `💡 Check your spelling/format! Correct exam answer: ${b.display}`;
+      renderMath(fb);
+    });
+    card.querySelector(`#blank-rev-${idx}`).addEventListener('click', () => {
+      fb.className = 'quiz-feedback show ok';
+      fb.innerHTML = `📘 Exam Answer: ${b.display}`;
+      renderMath(fb);
+    });
+  });
+
+  // ---------------- 13. PART B & C: SHORT ANSWERS ----------------
+  const shortProblems = [
+    {
+      marks: '2 Marks',
+      q: '1. Evaluate $\\lim_{x \\to 2} \\frac{x^3 - 2x^2}{x^2 - 5x + 6}$.',
+      hint: 'Plugging $x=2$ gives $\\frac{0}{0}$. Factor $x^2$ from the numerator and factor the quadratic denominator into $(x-2)(x-3)$.',
+      sol: `<ol>
+        <li>At $x = 2$, the expression takes the $\\frac{0}{0}$ form.</li>
+        <li>Factor and cancel $(x - 2)$: $$\\lim_{x \\to 2} \\frac{x^2(x - 2)}{(x - 2)(x - 3)} = \\lim_{x \\to 2} \\frac{x^2}{x - 3}$$</li>
+        <li>Substitute $x = 2$: $\\frac{2^2}{2 - 3} = \\frac{4}{-1} = \\mathbf{-4}$.</li>
+      </ol>`
+    },
+    {
+      marks: '2 Marks',
+      q: '2. Evaluate $\\lim_{x \\to 0} \\frac{\\tan x}{x}$.',
+      hint: 'Rewrite $\\tan x = \\frac{\\sin x}{\\cos x}$ and split into two known limits.',
+      sol: `<ol>
+        <li>Rewrite $\\tan x = \\frac{\\sin x}{\\cos x}$: $$\\lim_{x \\to 0} \\frac{\\tan x}{x} = \\lim_{x \\to 0} \\frac{\\sin x}{x} \\cdot \\lim_{x \\to 0} \\frac{1}{\\cos x}$$</li>
+        <li>Using $\\lim_{x \\to 0}\\frac{\\sin x}{x} = 1$ and $\\cos 0 = 1$: $1 \\times \\frac{1}{1} = \\mathbf{1}$.</li>
+      </ol>`
+    },
+    {
+      marks: '3 Marks',
+      q: '3. Find the derivative of $f(x) = \\frac{1}{x}$ from the first principle.',
+      hint: 'Start with $\\lim_{h\\to 0}\\frac{\\frac{1}{x+h} - \\frac{1}{x}}{h}$. Take the LCM $x(x+h)$ in the numerator so the $h$ cancels!',
+      sol: `<ol>
+        <li>By first principle: $f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h} = \\lim_{h \\to 0} \\frac{\\frac{1}{x+h} - \\frac{1}{x}}{h}$</li>
+        <li>Take LCM in numerator: $\\lim_{h \\to 0} \\frac{1}{h} \\left[\\frac{x - (x+h)}{x(x+h)}\\right] = \\lim_{h \\to 0} \\frac{-h}{h \\cdot x(x+h)}$</li>
+        <li>Cancel $h$ ($h \\ne 0$) and put $h \\to 0$: $\\lim_{h \\to 0} \\frac{-1}{x(x+h)} = \\mathbf{-\\frac{1}{x^2}}$.</li>
+      </ol>`
+    },
+    {
+      marks: '2 Marks',
+      q: '4. Find the derivative of $f(x) = 1 + x + x^2 + \\dots + x^{50}$ at $x = 1$.',
+      hint: 'Differentiate term-by-term with Power Rule, then plug $x=1$ to get the sum $1 + 2 + \\dots + 50 = \\frac{n(n+1)}{2}$.',
+      sol: `<ol>
+        <li>Differentiate term-by-term using $\\frac{d}{dx}(x^n) = nx^{n-1}$: $$f'(x) = 0 + 1 + 2x + 3x^2 + \\dots + 50x^{49}$$</li>
+        <li>Put $x = 1$: $$f'(1) = 1 + 2 + 3 + \\dots + 50 = \\frac{50 \\times 51}{2} = \\mathbf{1275}$$</li>
+      </ol>`
+    },
+    {
+      marks: '2 Marks',
+      q: '5. Find the derivative of $f(x) = \\sin 2x$ using the Product Rule.',
+      hint: 'First rewrite $\\sin 2x = 2\\sin x \\cos x$, then apply $(uv)\' = u\'v + uv\'$.',
+      sol: `<ol>
+        <li>Write $\\sin 2x = 2\\sin x \\cos x$.</li>
+        <li>Apply Product Rule: $$f'(x) = 2\\left[(\\sin x)'\\cos x + \\sin x (\\cos x)'\\right] = 2\\left[\\cos^2 x - \\sin^2 x\\right] = \\mathbf{2\\cos 2x}$$</li>
+      </ol>`
+    },
+    {
+      marks: '3 Marks',
+      q: '6. Find the derivative of $f(x) = \\frac{x + \\cos x}{\\tan x}$.',
+      hint: 'Use Quotient Rule $\\frac{u\'v - uv\'}{v^2}$ with $u = x + \\cos x$ and $v = \\tan x$. Remember $(\\cos x)\' = -\\sin x$ and $(\\tan x)\' = \\sec^2 x$.',
+      sol: `<ol>
+        <li>Apply Quotient Rule with $u = x + \\cos x$ and $v = \\tan x$: $$f'(x) = \\frac{(x + \\cos x)' \\tan x - (x + \\cos x)(\\tan x)'}{(\\tan x)^2}$$</li>
+        <li>Substitute $(x + \\cos x)' = 1 - \\sin x$ and $(\\tan x)' = \\sec^2 x$: $$f'(x) = \\mathbf{\\frac{(1 - \\sin x)\\tan x - (x + \\cos x)\\sec^2 x}{\\tan^2 x}}$$</li>
+      </ol>`
+    }
+  ];
+
+  // ---------------- 14. PART D: 5-MARK / 6-MARK ----------------
+  const longProblems = [
+    {
+      marks: '5 / 6 Marks ★ Guaranteed',
+      q: '1. Prove geometrically that $\\cos x < \\frac{\\sin x}{x} < 1$ for $0 < x < \\frac{\\pi}{2}$, and hence prove that $\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$.',
+      hint: 'Draw the unit circle (Lab 3 above!) and compare: Area($\\triangle OAC$) < Area(sector $OAC$) < Area($\\triangle OAB$).',
+      sol: `<ol>
+        <li><strong>Setup &amp; Diagram (NCERT Fig. 13.10):</strong> Consider a unit circle with centre $O$ and angle $AOC = x$ radians ($0 < x < \\frac{\\pi}{2}$). Draw $CD \\perp OA$ and tangent $AB \\perp OA$ (meeting $OC$ extended at $B$); join $AC$.</li>
+        <li><strong>Step 1 (Area Inequality):</strong>
+          $$\\text{Area}(\\triangle OAC) < \\text{Area}(\\text{sector } OAC) < \\text{Area}(\\triangle OAB)$$
+          $$\\frac{1}{2} OA \\cdot CD < \\frac{x}{2\\pi}\\pi(OA)^2 < \\frac{1}{2} OA \\cdot AB \\implies CD < x \\cdot OA < AB$$
+        </li>
+        <li><strong>Step 2 (Trigonometric Ratios):</strong> From $\\triangle OCD$ and $\\triangle OAB$, $CD = OA\\sin x$ and $AB = OA\\tan x$. Substituting and dividing by $OA > 0$:
+          $$\\sin x < x < \\tan x$$
+        </li>
+        <li><strong>Step 3 (Divide &amp; Reciprocals):</strong> Since $\\sin x > 0$, divide by $\\sin x$ to get $1 < \\frac{x}{\\sin x} < \\frac{1}{\\cos x}$. Taking reciprocals flips the inequalities:
+          $$\\cos x < \\frac{\\sin x}{x} < 1$$
+        </li>
+        <li><strong>Step 4 (Sandwich Theorem):</strong> Since $\\sin(-x) = -\\sin x$ and $\\cos(-x) = \\cos x$, this holds for $-\\frac{\\pi}{2} < x < \\frac{\\pi}{2}$ ($x \\ne 0$). As $\\lim_{x \\to 0} \\cos x = 1$ and $\\lim_{x \\to 0} 1 = 1$, by the Sandwich Theorem: $$\\lim_{x \\to 0} \\frac{\\sin x}{x} = \\mathbf{1}$$</li>
+      </ol>`
+    },
+    {
+      marks: '5 Marks ★ High Frequency',
+      q: '2. Prove Theorem 2: For any positive integer $n$, $\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = n a^{n-1}$.',
+      hint: 'Factor $(x^n - a^n)$ by pulling out $(x - a)$, cancel $(x - a)$, then plug in $x = a$ to add $n$ identical copies of $a^{n-1}$.',
+      sol: `<ol>
+        <li><strong>Step 1 (Factorization Identity):</strong> Dividing $(x^n - a^n)$ by $(x - a)$:
+          $$x^n - a^n = (x - a)\\left(x^{n-1} + x^{n-2}a + x^{n-3}a^2 + \\dots + x a^{n-2} + a^{n-1}\\right)$$
+        </li>
+        <li><strong>Step 2 (Cancel Factor):</strong> For $x \\ne a$, divide both sides by $(x - a)$:
+          $$\\frac{x^n - a^n}{x - a} = x^{n-1} + x^{n-2}a + x^{n-3}a^2 + \\dots + x a^{n-2} + a^{n-1}$$
+        </li>
+        <li><strong>Step 3 (Take Limit $x \\to a$):</strong>
+          $$\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = a^{n-1} + a \\cdot a^{n-2} + \\dots + a^{n-2}(a) + a^{n-1} \\quad (n \\text{ terms})$$
+        </li>
+        <li><strong>Step 4 (Final Result):</strong> Adding $n$ identical terms of $a^{n-1}$ gives: $$\\lim_{x \\to a} \\frac{x^n - a^n}{x - a} = \\mathbf{n a^{n-1}}$$</li>
+      </ol>`
+    },
+    {
+      marks: '4 / 5 Marks',
+      q: '3. Find the integers $m$ and $n$ such that both $\\lim_{x \\to 0} f(x)$ and $\\lim_{x \\to 1} f(x)$ exist, where $f(x) = \\begin{cases} mx^2 + n, & x < 0 \\\\ nx + m, & 0 \\le x \\le 1 \\\\ nx^3 + m, & x > 1 \\end{cases}$.',
+      hint: 'Compute LHL and RHL separately at $x = 0$, then at $x = 1$. Set LHL = RHL at both points!',
+      sol: `<ol>
+        <li><strong>Condition:</strong> Limit exists at $x = a$ iff $\\lim_{x \\to a^-} f(x) = \\lim_{x \\to a^+} f(x)$.</li>
+        <li><strong>At $x = 0$:</strong>
+          $\\text{LHL} = \\lim_{x \\to 0^-} (mx^2 + n) = n$, and $\\text{RHL} = \\lim_{x \\to 0^+} (nx + m) = m$.<br>
+          For $\\lim_{x \\to 0} f(x)$ to exist, we must have $\\mathbf{m = n}$.
+        </li>
+        <li><strong>At $x = 1$:</strong>
+          $\\text{LHL} = \\lim_{x \\to 1^-} (nx + m) = n + m$, and $\\text{RHL} = \\lim_{x \\to 1^+} (nx^3 + m) = n + m$.<br>
+          Here $\\text{LHL} = \\text{RHL}$ automatically for <em>all</em> $m, n$.
+        </li>
+        <li><strong>Final Answer:</strong> Both limits exist for any integers $m$ and $n$ satisfying $\\mathbf{m = n}$.</li>
+      </ol>`
+    },
+    {
+      marks: '5 Marks',
+      q: '4. Find the derivative of $f(x) = x \\sin x$ from the first principle.',
+      hint: 'Expand $\\sin(x+h) = \\sin x \\cos h + \\cos x \\sin h$, then regroup terms to form $\\frac{\\cos h - 1}{h} \\to 0$ and $\\frac{\\sin h}{h} \\to 1$.',
+      sol: `<ol>
+        <li><strong>Formula:</strong> $f'(x) = \\lim_{h \\to 0} \\frac{(x+h)\\sin(x+h) - x\\sin x}{h}$</li>
+        <li><strong>Expand $\\sin(x+h) = \\sin x \\cos h + \\cos x \\sin h$:</strong>
+          $$f'(x) = \\lim_{h \\to 0} \\frac{(x+h)(\\sin x \\cos h + \\cos x \\sin h) - x\\sin x}{h}$$
+        </li>
+        <li><strong>Regroup to isolate $(\\cos h - 1)$ and $\\sin h$:</strong>
+          $$= \\lim_{h \\to 0} \\frac{x\\sin x(\\cos h - 1) + x\\cos x \\sin h + h(\\sin x \\cos h + \\cos x \\sin h)}{h}$$
+          $$= x\\sin x \\lim_{h \\to 0}\\frac{\\cos h - 1}{h} + x\\cos x \\lim_{h \\to 0}\\frac{\\sin h}{h} + \\lim_{h \\to 0}(\\sin x \\cos h + \\cos x \\sin h)$$
+        </li>
+        <li><strong>Apply Standard Limits ($\\to 0$ and $\\to 1$):</strong>
+          $$= x\\sin x(0) + x\\cos x(1) + (\\sin x \\cdot 1 + \\cos x \\cdot 0) = \\mathbf{x\\cos x + \\sin x}$$
+        </li>
+      </ol>`
+    }
+  ];
+
+  function renderProblemList(list, targetId) {
+    const el = document.getElementById(targetId);
+    list.forEach((p, idx) => {
+      const card = document.createElement('div');
+      card.className = 'prob-card';
+      card.innerHTML = `
+        <div class="prob-top">
+          <strong>${p.q}</strong>
+          <span class="marks-badge">${p.marks}</span>
+        </div>
+        <div class="btn-row">
+          <button class="pill-btn" data-toggle="hint">💡 Show Tutor Hint</button>
+          <button class="pill-btn active" data-toggle="sol">📘 Show Model Answer</button>
+        </div>
+        <div class="reveal-box" data-box="hint"><strong>💡 Tutor Hint:</strong> ${p.hint}</div>
+        <div class="reveal-box" data-box="sol"><strong>✅ Exam Model Answer:</strong> ${p.sol}</div>
+      `;
+      card.querySelector('[data-toggle="hint"]').addEventListener('click', () => {
+        card.querySelector('[data-box="hint"]').classList.toggle('show');
+      });
+      card.querySelector('[data-toggle="sol"]').addEventListener('click', () => {
+        card.querySelector('[data-box="sol"]').classList.toggle('show');
+      });
+      el.appendChild(card);
+    });
+  }
+  renderProblemList(shortProblems, 'shortAnsContainer');
+  renderProblemList(longProblems, 'longAnsContainer');
+  renderMath(document.getElementById('sec-practice'));
+
+  // ---------------- 15. MOCK EXAM TIMER ----------------
+  let timerSec = 3600;
+  let timerHandle = null;
+  const timerDisp = document.getElementById('mockTimer');
+  const timerStartBtn = document.getElementById('timerStartBtn');
+
+  function formatTimer(s) {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const sec = (s % 60).toString().padStart(2, '0');
+    return `${m}:${sec}`;
+  }
+  timerStartBtn.addEventListener('click', () => {
+    if (timerHandle) {
+      clearInterval(timerHandle);
+      timerHandle = null;
+      timerStartBtn.textContent = '▶ Resume';
+    } else {
+      timerStartBtn.textContent = '⏸ Pause';
+      timerHandle = setInterval(() => {
+        if (timerSec > 0) {
+          timerSec--;
+          timerDisp.textContent = formatTimer(timerSec);
+        } else {
+          clearInterval(timerHandle);
+          timerHandle = null;
+          alert('⏰ Time is up! Great practice—check your answers against the Model Solutions.');
+        }
+      }, 1000);
+    }
+  });
+  document.getElementById('timerResetBtn').addEventListener('click', () => {
+    clearInterval(timerHandle);
+    timerHandle = null;
+    timerSec = 3600;
+    timerDisp.textContent = formatTimer(timerSec);
+    timerStartBtn.textContent = '▶ Start';
+  });
+
+  // ---------------- 16. 15-DAY STUDY PLAN ----------------
+  const planDays = [
+    { id: 'd1', dates: 'Nov 26 – Nov 28', title: 'Direct Substitution, 0/0 Factoring & Theorem 2', task: 'Use Lab 2 above, solve 5 easy factoring limits, and write out the 4-step proof of Theorem 2 (Part D, Q2) twice from memory.' },
+    { id: 'd2', dates: 'Nov 29 – Dec 1', title: 'LHL/RHL & Trigonometric Limits (sin x / x)', task: 'Explore Labs 1 & 3, master angle-matching (sin 4x / sin 2x = 2), and draw + prove the unit-circle Sandwich Theorem proof twice.' },
+    { id: 'd3', dates: 'Dec 2 – Dec 4', title: 'Power, Product & Quotient Rules', task: 'Flip through the Formula Flashcards daily and practice 10 textbook differentiation problems until the Quotient Rule minus sign is automatic.' },
+    { id: 'd4', dates: 'Dec 5 – Dec 6', title: 'First Principle of Derivatives', task: 'Use Lab 4 and practice finding derivatives of x², 1/x, sin x, and x·sin x from First Principle (Part B Q3 & Part D Q4).' },
+    { id: 'd5', dates: 'Dec 7 – Dec 8', title: 'Timed 1-Hour Mini Mock Test', task: 'Start the 60:00 timer in Module 9! Solve Part A (all 10 items), Part B/C, and the 2 proofs without peeking, then grade yourself.' },
+    { id: 'd6', dates: 'Dec 9', title: 'Light Revision & Full Sleep', task: 'Review the 5-Minute Night-Before Revision Box below, check your 5 Exam Traps, pack your pen/scale, and sleep 8 full hours.' },
+    { id: 'd7', dates: 'Dec 10 — EXAM DAY!', title: 'Calm Execution in the Exam Hall', task: 'Write the formula first on EVERY question to guarantee step marks, double-check signs in Quotient Rule, and smash your 2nd Class+ goal!' }
+  ];
+
+  const planContainer = document.getElementById('planContainer');
+  planDays.forEach(p => {
+    const item = document.createElement('label');
+    item.className = 'plan-item' + (state.plan[p.id] ? ' checked' : '');
+    item.innerHTML = `
+      <input type="checkbox" ${state.plan[p.id] ? 'checked' : ''}>
+      <div>
+        <div class="plan-date">${p.dates}</div>
+        <strong>${p.title}</strong>
+        <div style="font-size:0.88rem;color:var(--muted);margin-top:2px;">${p.task}</div>
+      </div>
+    `;
+    const cb = item.querySelector('input');
+    cb.addEventListener('change', () => {
+      state.plan[p.id] = cb.checked;
+      item.classList.toggle('checked', cb.checked);
+      saveState();
+    });
+    planContainer.appendChild(item);
+  });
+
+  // ---------------- 17. OVERALL READINESS BAR ----------------
+  function updateReadiness() {
+    const totalModules = document.querySelectorAll('[data-mastery]').length;
+    const doneModules = Object.values(state.mastery).filter(Boolean).length;
+    const totalPlan = planDays.length;
+    const donePlan = Object.values(state.plan).filter(Boolean).length;
+    const doneMcq = mcqs.filter(m => state.mcq[m.id] === m.ans).length;
+
+    const totalPoints = totalModules + totalPlan + mcqs.length;
+    const earnedPoints = doneModules + donePlan + doneMcq;
+    const pct = Math.round((earnedPoints / totalPoints) * 100);
+
+    document.getElementById('readinessPct').textContent = `${pct}%`;
+    document.getElementById('readinessBar').style.width = `${pct}%`;
+  }
+  updateReadiness();
+});
+</script>
+</body>
+</html>
